@@ -59,12 +59,13 @@
             android:layout_marginRight="10dp"></EditText>
         <ImageView
             android:id="@+id/img_face"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/aini"
-            app:layout_constraintRight_toRightOf="parent"/>
+            android:src="@mipmap/aini"
+            app:layout_constraintRight_toRightOf="parent"
+            android:scaleType="centerCrop"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_faces"
@@ -72,13 +73,15 @@
         android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_bottom"
-        android:visibility="visible">
+        android:visibility="gone">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_face_tab"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="#FAFAFA"
-            app:layout_constraintTop_toTopOf="parent"></androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"></androidx.recyclerview.widget.RecyclerView>
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager_face"
             android:layout_width="match_parent"

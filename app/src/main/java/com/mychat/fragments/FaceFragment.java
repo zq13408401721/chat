@@ -8,24 +8,51 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.mychat.MyApp;
 import com.mychat.R;
+import com.mychat.SmileyParser;
+import com.mychat.adapters.FaceListItemAdapter;
+import com.mychat.module.FaceListItemVo;
+
+import java.util.List;
 
 public class FaceFragment extends Fragment {
 
+    RecyclerView recyFace;
+    List<FaceListItemVo> faceList;
+    FaceListItemAdapter faceListItemAdapter;
     /**
      * 初始化fragment
+     *
      * @return
      */
-    public static FaceFragment getInstance(){
+    public static FaceFragment getInstance(int pos) {
         FaceFragment faceFragment = new FaceFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("pos", pos);
+        faceFragment.setArguments(bundle);
         return faceFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_face,container,false);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_face, container, false);
+        recyFace = view.findViewById(R.id.recyclerview);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        int pos = getArguments().getInt("pos");
+        faceList = SmileyParser.getInstance(MyApp.myApp).getFaceItemListByPos(pos);
+        faceListItemAdapter = new FaceListItemAdapter(faceList);
+        recyFace.setLayoutManager(new GridLayoutManager(getContext(),5));
+        recyFace.setAdapter(faceListItemAdapter);
     }
 }

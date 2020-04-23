@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MyChat</string>
 
+    <string-array name="smile_tab">
+        <item>[爱你]</item>
+        <item>[icon2]</item>
+    </string-array>
     <string-array name="default_smiley_texts">
         <item>[爱你]</item>
         <item>[机器人]</item>
@@ -13,5 +17,23 @@
         <item>[闭嘴]</item>
         <item>[不要]</item>
         <item>[馋嘴]</item>
+    </string-array>
+    <string-array name="default_smiley_icon">
+        <item>[icon2]</item>
+        <item>[icon7]</item>
+        <item>[icon10]</item>
+        <item>[icon12]</item>
+        <item>[icon13]</item>
+        <item>[icon18]</item>
+        <item>[icon19]</item>
+        <item>[icon20]</item>
+        <item>[icon21]</item>
+        <item>[icon22]</item>
+        <item>[icon24]</item>
+        <item>[icon27]</item>
+        <item>[icon29]</item>
+        <item>[icon30]</item>
+        <item>[icon35]</item>
+        <item>[icon40]</item>
     </string-array>
 </resources>

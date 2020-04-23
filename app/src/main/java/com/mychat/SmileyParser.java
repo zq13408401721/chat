@@ -5,34 +5,92 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.Log;
+
+import com.mychat.module.FaceListItemVo;
+import com.mychat.module.FaceTabVo;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SmileyParser {
     private Context mContext;
+    private String[] faceTabArr;
     private String[] mSmileyTexts;
+    private String[] mSmileyIcons;
     private Pattern mPattern;
     private HashMap<String, Integer> mSmileyToRes;
-    public static final int[] DEFAULT_SMILEY_RES_IDS = {
-        R.drawable.aini,
-        R.drawable.aoteman,
-        R.drawable.baibai,
-        R.drawable.baobao,
-        R.drawable.beiju,
-        R.drawable.beishang,
-        R.drawable.bianbian,
-        R.drawable.bishi,
-        R.drawable.bizui,
-        R.drawable.buyao,
-        R.drawable.chanzui,
+    private List<FaceTabVo> faceTabList;
+    private HashMap<Integer,List<FaceListItemVo>> allFaceMap;
+
+    //表情的tab图片id
+    public static final int[] FACE_TABS = {
+            R.mipmap.aini,
+            R.mipmap.icon_002_cover,
     };
+
+    //小表情资源
+    public static final int[] DEFAULT_SMILEY_RES_IDS = {
+        R.raw.aini,
+        R.raw.aoteman,
+        R.raw.baibai,
+        R.raw.baobao,
+        R.raw.beiju,
+        R.raw.beishang,
+        R.raw.bianbian,
+        R.raw.bishi,
+        R.raw.bizui,
+        R.raw.buyao,
+        R.raw.chanzui,
+    };
+
+    //大表情资源
+    public static final int[] DEFAULT_SMILEY_RES_ICONS = {
+            R.raw.icon_002,
+            R.raw.icon_007,
+            R.raw.icon_010,
+            R.raw.icon_012,
+            R.raw.icon_013,
+            R.raw.icon_018,
+            R.raw.icon_019,
+            R.raw.icon_020,
+            R.raw.icon_021,
+            R.raw.icon_022,
+            R.raw.icon_024,
+            R.raw.icon_027,
+            R.raw.icon_029,
+            R.raw.icon_030,
+            R.raw.icon_035,
+            R.raw.icon_040,
+
+    };
+
+    private static SmileyParser smileyParser;
+    public static SmileyParser getInstance(Context context){
+        synchronized (SmileyParser.class){
+            if(smileyParser == null){
+                synchronized (SmileyParser.class){
+                    smileyParser = new SmileyParser(context);
+                }
+            }
+        }
+        return smileyParser;
+    }
+
 
     public SmileyParser(Context context) {
         mContext = context;
+        faceTabArr = mContext.getResources().getStringArray(R.array.smile_tab);
         mSmileyTexts = mContext.getResources().getStringArray(DEFAULT_SMILEY_TEXTS);
         mSmileyToRes = buildSmileyToRes();
+        mSmileyIcons = mContext.getResources().getStringArray(R.array.default_smiley_icon);
         mPattern = buildPattern();
+        buildFace();
+        //tab数据初始化
+        initFaceTab();
+
     }
 
     public static final int DEFAULT_SMILEY_TEXTS = R.array.default_smiley_texts;
@@ -52,19 +110,76 @@ public class SmileyParser {
     }
 
     /**
+     * 初始化face资源
+     */
+    private void buildFace(){
+        allFaceMap = new HashMap<>();
+        List<FaceListItemVo> list_small = getFaceItemList(mSmileyTexts,DEFAULT_SMILEY_RES_IDS);
+        allFaceMap.put(0,list_small);
+        List<FaceListItemVo> list_big = getFaceItemList(mSmileyIcons,DEFAULT_SMILEY_RES_ICONS);
+        allFaceMap.put(0,list_big);
+    }
+
+    private List<FaceListItemVo> getFaceItemList(String[] arr,int[] ids){
+        List<FaceListItemVo> list = new ArrayList<>();
+        for(int i=0; i<arr.length; i++){
+            String temp = arr[i];
+            int end = temp.lastIndexOf("]");
+            String name = temp.substring(1,end-1);
+            FaceListItemVo itemVo = new FaceListItemVo();
+            itemVo.setFaceId(ids[i]);
+            itemVo.setName(name);
+            itemVo.setTag(temp);
+            itemVo.setPosition(i);
+            list.add(itemVo);
+        }
+        return list;
+    }
+
+    private void initFaceTab(){
+        faceTabList = new ArrayList<>();
+        for(int i=0; i<faceTabArr.length; i++){
+            FaceTabVo tabVo = new FaceTabVo();
+            tabVo.setFaceId(FACE_TABS[i]);
+            tabVo.setPostion(i);
+            faceTabList.add(tabVo);
+        }
+    }
+
+    /**
      * 表情正则表达式的初始化
      * @return
      */
     private Pattern buildPattern() {
-        StringBuilder patternString = new StringBuilder(mSmileyTexts.length * 3);
+        StringBuilder patternString = new StringBuilder((mSmileyTexts.length+mSmileyIcons.length) * 3);
         patternString.append('(');
         for (String s : mSmileyTexts) {
             patternString.append(Pattern.quote(s));
             patternString.append('|');
         }
+        for (String s : mSmileyIcons){
+            patternString.append(Pattern.quote(s));
+            patternString.append('|');
+        }
         patternString.replace(patternString.length() - 1, patternString.length(), ")");
-
         return Pattern.compile(patternString.toString());
+    }
+
+    public List<FaceTabVo> getFaceTabList(){
+        return faceTabList;
+    }
+
+    /**
+     * 获取对应tab分类下的表情
+     * @param pos
+     * @return
+     */
+    public List<FaceListItemVo> getFaceItemListByPos(int pos){
+        return allFaceMap.get(pos);
+    }
+
+    public int getFaceListSize(){
+        return allFaceMap.size();
     }
 
     /**
