@@ -20,7 +20,7 @@ import com.mychat.module.FaceListItemVo;
 
 import java.util.List;
 
-public class FaceFragment extends Fragment {
+public class FaceFragment extends Fragment implements FaceListItemAdapter.ListClick {
 
     RecyclerView recyFace;
     List<FaceListItemVo> faceList;
@@ -34,6 +34,7 @@ public class FaceFragment extends Fragment {
         FaceFragment faceFragment = new FaceFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("pos", pos);
+        //bundle.putInt("facetype",faceType);
         faceFragment.setArguments(bundle);
         return faceFragment;
     }
@@ -50,9 +51,22 @@ public class FaceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         int pos = getArguments().getInt("pos");
+        //int faceType = getArguments().getInt("facetype");
         faceList = SmileyParser.getInstance(MyApp.myApp).getFaceItemListByPos(pos);
         faceListItemAdapter = new FaceListItemAdapter(faceList);
-        recyFace.setLayoutManager(new GridLayoutManager(getContext(),5));
+        if(faceList.size() > 0){
+            FaceListItemVo itemVo = faceList.get(0);
+            if(itemVo.getFaceType() == SmileyParser.FACE_TYPE_1){
+                recyFace.setLayoutManager(new GridLayoutManager(getContext(),10));
+            }else{
+                recyFace.setLayoutManager(new GridLayoutManager(getContext(),5));
+            }
+        }
         recyFace.setAdapter(faceListItemAdapter);
+    }
+
+    @Override
+    public void onListClick(int postion) {
+
     }
 }

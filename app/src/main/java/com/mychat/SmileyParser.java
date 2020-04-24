@@ -16,6 +16,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SmileyParser {
+    public static int FACE_TYPE_1 = 1; //图文混排的表情
+    public static int FACE_TYPE_2 = 2; //常规的表情
+
+
     private Context mContext;
     private String[] faceTabArr;
     private String[] mSmileyTexts;
@@ -114,13 +118,13 @@ public class SmileyParser {
      */
     private void buildFace(){
         allFaceMap = new HashMap<>();
-        List<FaceListItemVo> list_small = getFaceItemList(mSmileyTexts,DEFAULT_SMILEY_RES_IDS);
+        List<FaceListItemVo> list_small = getFaceItemList(mSmileyTexts,DEFAULT_SMILEY_RES_IDS,FACE_TYPE_1);
         allFaceMap.put(0,list_small);
-        List<FaceListItemVo> list_big = getFaceItemList(mSmileyIcons,DEFAULT_SMILEY_RES_ICONS);
-        allFaceMap.put(0,list_big);
+        List<FaceListItemVo> list_big = getFaceItemList(mSmileyIcons,DEFAULT_SMILEY_RES_ICONS,FACE_TYPE_2);
+        allFaceMap.put(1,list_big);
     }
 
-    private List<FaceListItemVo> getFaceItemList(String[] arr,int[] ids){
+    private List<FaceListItemVo> getFaceItemList(String[] arr,int[] ids,int faceType){
         List<FaceListItemVo> list = new ArrayList<>();
         for(int i=0; i<arr.length; i++){
             String temp = arr[i];
@@ -131,6 +135,7 @@ public class SmileyParser {
             itemVo.setName(name);
             itemVo.setTag(temp);
             itemVo.setPosition(i);
+            itemVo.setFaceType(faceType);
             list.add(itemVo);
         }
         return list;

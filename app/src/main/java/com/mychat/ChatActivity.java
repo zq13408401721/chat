@@ -2,6 +2,9 @@ package com.mychat;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,6 +53,8 @@ public class ChatActivity extends AppCompatActivity {
     ViewPager viewpagerFace;
     @BindView(R.id.layout_faces)
     ConstraintLayout layoutFaces;
+    @BindView(R.id.btn_send)
+    TextView btnSend;
 
 
     List<FaceTabVo> tabList;
@@ -65,6 +70,7 @@ public class ChatActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initSmailTab();
         initFaceList();
+        addListener();
     }
 
     /**
@@ -99,8 +105,32 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    private void addListener(){
+        editChat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    @OnClick({R.id.txt_back, R.id.img_face})
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!TextUtils.isEmpty(editChat.getText().toString())){
+                    if (btnSend.getVisibility() == View.GONE){
+                        btnSend.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    btnSend.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    @OnClick({R.id.txt_back, R.id.img_face,R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.txt_back:
@@ -109,12 +139,20 @@ public class ChatActivity extends AppCompatActivity {
             case R.id.img_face:
                 showFaceTab();
                 break;
+            case R.id.btn_send:
+                sendMsg();
+                break;
         }
     }
 
 
     private void showFaceTab(){
         layoutFaces.setVisibility(layoutFaces.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+    }
+
+
+    private void sendMsg(){
+
     }
 
 
