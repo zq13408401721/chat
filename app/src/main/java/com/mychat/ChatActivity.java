@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.mychat.adapters.ChatAdapter;
 import com.mychat.adapters.FaceTabAdapter;
+import com.mychat.common.Message;
 import com.mychat.fragments.FaceFragment;
+import com.mychat.module.ChatMsgBean;
 import com.mychat.module.FaceTabVo;
+import com.mychat.utils.SpUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +67,11 @@ public class ChatActivity extends AppCompatActivity {
     FaceTabAdapter faceTabAdapter;
     List<FaceFragment> faceFragments;
 
+    List<ChatMsgBean> msgList; //消息列表
+    ChatAdapter chatAdapter; //聊天消息列表
+
+    String uid;
+
 
 
     @Override
@@ -71,6 +82,9 @@ public class ChatActivity extends AppCompatActivity {
         initSmailTab();
         initFaceList();
         addListener();
+        initMsg();
+
+        uid = SpUtils.getInstance().getString("uid");
     }
 
     /**
@@ -130,6 +144,16 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 初始化消息列表
+     */
+    private void initMsg(){
+        msgList = new ArrayList<>();
+        chatAdapter = new ChatAdapter(msgList,this);
+        listChat.setLayoutManager(new LinearLayoutManager(this));
+        listChat.setAdapter(chatAdapter);
+    }
+
     @OnClick({R.id.txt_back, R.id.img_face,R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -153,9 +177,34 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendMsg(){
 
+        String content = editChat.getText().toString();
+        if(TextUtils.isEmpty(content)){
+            Toast.makeText(this,"请输入内容",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int own = (int) (Math.random()*3);
+        String _uid = own == 1 ? uid : "200";
+        //构建消息对象
+        ChatMsgBean chatMsgBean = new ChatMsgBean();
+        chatMsgBean.setFromUid(_uid);
+
+        if(own == 2){
+            chatMsgBean.setContent("http://img2.imgtn.bdimg.com/it/u=360742069,3464339755&fm=26&gp=0.jpg");
+            chatMsgBean.setMsgType(Message.MSG_TYPE_IMAGE);
+        }else{
+            chatMsgBean.setContent(content);
+            chatMsgBean.setMsgType(Message.MSG_TYPE_WORD);
+        }
+        int time = (int) (new Date().getTime()/1000);
+        chatMsgBean.setTime(time);
+
+        msgList.add(chatMsgBean);
+        //清空输入框
+        editChat.setText("");
+
+        chatAdapter.notifyDataSetChanged();
     }
-
-
 
 
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.mychat.anim.gif.AnimatedGifDrawable;
 import com.mychat.anim.gif.AnimatedImageSpan;
+import com.mychat.utils.SpUtils;
 import com.mychat.utils.SpannableUtils;
 
 /**
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
+
+        SpUtils.getInstance().setValue("uid","100");
+
     }
 
     private void initView(){
