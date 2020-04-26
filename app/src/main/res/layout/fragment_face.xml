@@ -8,6 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"></androidx.recyclerview.widget.RecyclerView>
-
+        android:paddingRight="10dp"
+        android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@mipmap/ic_launcher"></ImageView>
 </androidx.constraintlayout.widget.ConstraintLayout>

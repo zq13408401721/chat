@@ -27,6 +27,7 @@ import com.mychat.adapters.FaceListItemAdapter;
 import com.mychat.adapters.FaceTabAdapter;
 import com.mychat.common.Message;
 import com.mychat.fragments.FaceFragment;
+import com.mychat.fragments.WidgetFragment;
 import com.mychat.module.ChatMsgBean;
 import com.mychat.module.FaceListItemVo;
 import com.mychat.module.FaceTabVo;
@@ -64,11 +65,19 @@ public class ChatActivity extends AppCompatActivity {
     ConstraintLayout layoutFaces;
     @BindView(R.id.btn_send)
     TextView btnSend;
+    @BindView(R.id.btn_add)
+    TextView btnAdd;
+    @BindView(R.id.layout_widget)
+    ConstraintLayout layoutWidget;
+    @BindView(R.id.viewpager_widget)
+    ViewPager viewPagerWidget;
 
 
     List<FaceTabVo> tabList;
     FaceTabAdapter faceTabAdapter;
     List<FaceFragment> faceFragments;
+
+    List<WidgetFragment> widgetFragments;
 
     List<ChatMsgBean> msgList; //消息列表
     ChatAdapter chatAdapter; //聊天消息列表
@@ -89,6 +98,7 @@ public class ChatActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initSmailTab();
         initFaceList();
+        initWidget();
         addListener();
         initMsg();
         chatInput = new StringBuilder();
@@ -133,7 +143,29 @@ public class ChatActivity extends AppCompatActivity {
                 return faceFragments.size();
             }
         });
+    }
 
+    /**
+     * 初始化添加面版
+     */
+    private void initWidget(){
+        widgetFragments = new ArrayList<>();
+        for(int i=0; i<2; i++){
+            WidgetFragment widgetFragment = WidgetFragment.getInstance(i);
+            widgetFragments.add(widgetFragment);
+        }
+        viewPagerWidget.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                return widgetFragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return widgetFragments.size();
+            }
+        });
     }
 
     private void addListener(){
@@ -174,14 +206,15 @@ public class ChatActivity extends AppCompatActivity {
                         CharSequence chat = SmileyParser.getInstance(MyApp.myApp).replace(chatInput);
                         editChat.setText(chat);
                     }
-                }else{
-                    if(!TextUtils.isEmpty(editChat.getText().toString())){
-                        if (btnSend.getVisibility() == View.GONE){
-                            btnSend.setVisibility(View.VISIBLE);
-                        }
-                    }else{
-                        btnSend.setVisibility(View.GONE);
+                }
+                if(!TextUtils.isEmpty(editChat.getText().toString())){
+                    if (btnSend.getVisibility() == View.GONE){
+                        btnSend.setVisibility(View.VISIBLE);
+                        btnAdd.setVisibility(View.GONE);
                     }
+                }else{
+                    btnSend.setVisibility(View.GONE);
+                    btnAdd.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -204,7 +237,7 @@ public class ChatActivity extends AppCompatActivity {
         listChat.setAdapter(chatAdapter);
     }
 
-    @OnClick({R.id.txt_back, R.id.img_face,R.id.btn_send})
+    @OnClick({R.id.txt_back, R.id.img_face,R.id.btn_send,R.id.btn_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.txt_back:
@@ -216,14 +249,47 @@ public class ChatActivity extends AppCompatActivity {
             case R.id.btn_send:
                 sendMsg();
                 break;
+            case R.id.btn_add:
+                showWidget();
+                break;
         }
     }
 
 
     private void showFaceTab(){
-        layoutFaces.setVisibility(layoutFaces.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+        if(layoutFaces.getVisibility() == View.GONE){
+            layoutFaces.setVisibility(View.VISIBLE);
+            //关闭软键盘
+
+            listFaceTab.setVisibility(View.VISIBLE);
+            viewpagerFace.setVisibility(View.VISIBLE);
+            layoutWidget.setVisibility(View.GONE);
+            viewPagerWidget.setVisibility(View.GONE);
+        }else{
+            //软键盘的显示和隐藏
+
+            listFaceTab.setVisibility(View.VISIBLE);
+            viewpagerFace.setVisibility(View.VISIBLE);
+            layoutWidget.setVisibility(View.GONE);
+            viewPagerWidget.setVisibility(View.GONE);
+        }
     }
 
+    private void showWidget(){
+        if(layoutFaces.getVisibility() == View.GONE){
+            layoutFaces.setVisibility(View.VISIBLE);
+            layoutWidget.setVisibility(View.VISIBLE);
+            viewPagerWidget.setVisibility(View.VISIBLE);
+            listFaceTab.setVisibility(View.GONE);
+            viewpagerFace.setVisibility(View.GONE);
+        }else{
+            //如果已经是显示状态，控制软键盘的显示和隐藏
+            layoutWidget.setVisibility(View.VISIBLE);
+            viewPagerWidget.setVisibility(View.VISIBLE);
+            listFaceTab.setVisibility(View.GONE);
+            viewpagerFace.setVisibility(View.GONE);
+        }
+    }
 
     private void sendMsg(){
 
