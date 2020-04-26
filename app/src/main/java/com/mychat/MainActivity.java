@@ -1,25 +1,37 @@
 package com.mychat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.accessibility.AccessibilityViewCommand;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.mychat.anim.gif.AnimatedGifDrawable;
 import com.mychat.anim.gif.AnimatedImageSpan;
+import com.mychat.common.Constant;
 import com.mychat.utils.SpUtils;
 import com.mychat.utils.SpannableUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * https://www.jianshu.com/p/050ffa5b762c
@@ -31,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtSpan3;
     private TextView txtFace;
     private Button btnTalk;
+    private Button btnPop;
+
+    PopupWindow popupWindow;
+    List<String> list;
 
     SmileyParser smileyParser;
     @Override
@@ -41,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         initData();
 
         SpUtils.getInstance().setValue("uid","100");
-
     }
 
     private void initView(){
@@ -50,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         txtSpan2 = findViewById(R.id.txt_span2);
         txtSpan3 = findViewById(R.id.txt_span3);
         txtFace = findViewById(R.id.txt_face);
+        btnPop = findViewById(R.id.btn_pop);
         smileyParser = SmileyParser.getInstance(MyApp.myApp);
 
         btnTalk.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +76,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if(Constant.curItemVo != null){
+
+        }
+
+        list = new ArrayList<>();
+        for(int i=0; i<50; i++){
+            list.add("item"+i);
+        }
+
+        btnPop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPopwindow();
+            }
+        });
+
+    }
+
+    private void openPopwindow(){
+        //if(popupWindow == null){
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_pop,null);
+            popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            popupWindow.setBackgroundDrawable(new BitmapDrawable());
+            popupWindow.setFocusable(true);
+            popupWindow.setOutsideTouchable(true);
+            RecyclerView recy = view.findViewById(R.id.recy);
+            DataAdapter dataAdapter = new DataAdapter();
+            recy.setLayoutManager(new LinearLayoutManager(this));
+            recy.setAdapter(dataAdapter);
+            popupWindow.showAtLocation(btnPop, Gravity.CENTER,0,0);
+       // }
     }
 
     private void initData(){
@@ -92,6 +139,38 @@ public class MainActivity extends AppCompatActivity {
         SpannableString spannableString = new SpannableString(str);
         spannableString.setSpan(imgSpan,0,2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         txtFace.setText(spannableString);
+    }
+
+
+    class DataAdapter extends RecyclerView.Adapter{
+
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view  = LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_chat_right_item,parent,false);
+            VH vh = new VH(view);
+            return vh;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            VH vh = (VH) holder;
+            vh.textView.setText(list.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+    }
+
+    class VH extends RecyclerView.ViewHolder{
+        TextView textView;
+        public VH(@NonNull View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.txt_name);
+        }
     }
 
 }

@@ -1,7 +1,9 @@
 package com.mychat;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.Log;
@@ -197,8 +199,22 @@ public class SmileyParser {
         Matcher matcher = mPattern.matcher(text);
         while (matcher.find()) {
             int resId = mSmileyToRes.get(matcher.group());
-            builder.setSpan(new ImageSpan(mContext, resId),matcher.start(), matcher.end(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new ImageSpan(mContext, resId),matcher.start(), matcher.end(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
         return builder;
     }
+
+    public CharSequence addSmaile(int resId){
+        String str = "[0]";
+        SpannableString span = new SpannableString(str);
+        Drawable drawable = mContext.getResources().getDrawable(resId);
+        drawable.setBounds(0,0,drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());
+        ImageSpan img = new ImageSpan(drawable,ImageSpan.ALIGN_BASELINE);
+        int start = str.indexOf("[");
+        int end = str.indexOf("]")+1;
+        span.setSpan(img,start,end,Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return span;
+    }
+
+
 }

@@ -70,7 +70,7 @@ public class FaceListItemAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 FaceListItemVo tmp = (FaceListItemVo) v.getTag();
                 if(listClick != null){
-                    listClick.onListClick(tmp.getPosition());
+                    listClick.onListClick(tmp);
                 }
             }
         });
@@ -86,8 +86,8 @@ public class FaceListItemAdapter extends RecyclerView.Adapter {
         return this.list.get(position).getFaceType();
     }
 
-    public void addTabOnClickListener(ListClick tabClick){
-        this.listClick = tabClick;
+    public void addListOnClickListener(ListClick listClick){
+        this.listClick = listClick;
     }
 
     class ListVH extends RecyclerView.ViewHolder{
@@ -101,6 +101,6 @@ public class FaceListItemAdapter extends RecyclerView.Adapter {
     }
 
     public interface ListClick{
-        void onListClick(int postion);
+        void onListClick(FaceListItemVo itemVo);
     }
 }

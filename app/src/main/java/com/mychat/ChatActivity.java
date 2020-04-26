@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,10 +23,12 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.mychat.adapters.ChatAdapter;
+import com.mychat.adapters.FaceListItemAdapter;
 import com.mychat.adapters.FaceTabAdapter;
 import com.mychat.common.Message;
 import com.mychat.fragments.FaceFragment;
 import com.mychat.module.ChatMsgBean;
+import com.mychat.module.FaceListItemVo;
 import com.mychat.module.FaceTabVo;
 import com.mychat.utils.SpUtils;
 
@@ -72,6 +75,11 @@ public class ChatActivity extends AppCompatActivity {
 
     String uid;
 
+    StringBuilder chatInput;
+
+    int beforeLg = 0;
+    CharSequence curChar = null;
+
 
 
     @Override
@@ -83,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
         initFaceList();
         addListener();
         initMsg();
-
+        chatInput = new StringBuilder();
         uid = SpUtils.getInstance().getString("uid");
     }
 
@@ -101,7 +109,16 @@ public class ChatActivity extends AppCompatActivity {
         faceFragments = new ArrayList<>();
         int size = SmileyParser.getInstance(MyApp.myApp).getFaceListSize();
         for(int i=0; i<size; i++){
-            FaceFragment faceFragment = FaceFragment.getInstance(i);
+            FaceFragment faceFragment = FaceFragment.getInstance(i, new FaceListItemAdapter.ListClick() {
+                @Override
+                public void onListClick(FaceListItemVo itemVo) {
+                    if(itemVo.getFaceType() == SmileyParser.FACE_TYPE_1){
+                        addSmiley(itemVo);
+                    }else if(itemVo.getFaceType() == SmileyParser.FACE_TYPE_2){
+                        //发送表情
+                    }
+                }
+            });
             faceFragments.add(faceFragment);
         }
         viewpagerFace.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
@@ -120,28 +137,61 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void addListener(){
+
+        /*editChat.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_DEL){
+                    int lg = chatInput.length();
+                    if(lg > 0){
+                        chatInput.deleteCharAt(lg-1);
+                        editChat.setText(chatInput.toString());
+                    }
+                }
+                return false;
+            }
+        });*/
+
         editChat.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                beforeLg = s.length();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                curChar = s;
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!TextUtils.isEmpty(editChat.getText().toString())){
-                    if (btnSend.getVisibility() == View.GONE){
-                        btnSend.setVisibility(View.VISIBLE);
+                int afterLg = s.length();
+                if(afterLg < beforeLg){
+                    int lg = chatInput.length();
+                    if(lg > 0){
+                        int start = chatInput.lastIndexOf("[");
+                        chatInput.delete(start,chatInput.length());
+                        CharSequence chat = SmileyParser.getInstance(MyApp.myApp).replace(chatInput);
+                        editChat.setText(chat);
                     }
                 }else{
-                    btnSend.setVisibility(View.GONE);
+                    if(!TextUtils.isEmpty(editChat.getText().toString())){
+                        if (btnSend.getVisibility() == View.GONE){
+                            btnSend.setVisibility(View.VISIBLE);
+                        }
+                    }else{
+                        btnSend.setVisibility(View.GONE);
+                    }
                 }
             }
         });
+
+
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        return super.dispatchKeyEvent(event);
     }
 
     /**
@@ -189,24 +239,34 @@ public class ChatActivity extends AppCompatActivity {
         ChatMsgBean chatMsgBean = new ChatMsgBean();
         chatMsgBean.setFromUid(_uid);
 
-        if(own == 2){
+        /*if(own == 2){
             chatMsgBean.setContent("http://img2.imgtn.bdimg.com/it/u=360742069,3464339755&fm=26&gp=0.jpg");
             chatMsgBean.setMsgType(Message.MSG_TYPE_IMAGE);
-        }else{
-            chatMsgBean.setContent(content);
-            chatMsgBean.setMsgType(Message.MSG_TYPE_WORD);
-        }
+        }else{}*/
+        chatMsgBean.setContent(content);
+        chatMsgBean.setMsgType(Message.MSG_TYPE_WORD);
+
         int time = (int) (new Date().getTime()/1000);
         chatMsgBean.setTime(time);
 
         msgList.add(chatMsgBean);
         //清空输入框
         editChat.setText("");
+        chatInput.delete(0,chatInput.length());
 
         chatAdapter.notifyDataSetChanged();
     }
 
-
+    /**
+     * 插入表情
+     * @param itemVo
+     */
+    private void addSmiley(FaceListItemVo itemVo){
+        String str = chatInput.toString()+itemVo.getTag();
+        CharSequence chat = SmileyParser.getInstance(MyApp.myApp).replace(str);
+        chatInput.append(chat);
+        editChat.setText(chat);
+    }
 
 
 

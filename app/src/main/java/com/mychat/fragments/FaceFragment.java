@@ -20,22 +20,24 @@ import com.mychat.module.FaceListItemVo;
 
 import java.util.List;
 
-public class FaceFragment extends Fragment implements FaceListItemAdapter.ListClick {
+public class FaceFragment extends Fragment {
 
     RecyclerView recyFace;
     List<FaceListItemVo> faceList;
     FaceListItemAdapter faceListItemAdapter;
+    public FaceListItemAdapter.ListClick listClick;
     /**
      * 初始化fragment
      *
      * @return
      */
-    public static FaceFragment getInstance(int pos) {
+    public static FaceFragment getInstance(int pos, FaceListItemAdapter.ListClick click) {
         FaceFragment faceFragment = new FaceFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("pos", pos);
         //bundle.putInt("facetype",faceType);
         faceFragment.setArguments(bundle);
+        faceFragment.listClick = click;
         return faceFragment;
     }
 
@@ -63,10 +65,6 @@ public class FaceFragment extends Fragment implements FaceListItemAdapter.ListCl
             }
         }
         recyFace.setAdapter(faceListItemAdapter);
-    }
-
-    @Override
-    public void onListClick(int postion) {
-
+        faceListItemAdapter.addListOnClickListener(this.listClick);
     }
 }

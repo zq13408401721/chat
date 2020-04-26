@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mychat.MyApp;
 import com.mychat.R;
+import com.mychat.SmileyParser;
 import com.mychat.common.Constant;
 import com.mychat.common.Message;
 import com.mychat.module.ChatMsgBean;
@@ -50,7 +52,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ChatVH chatVH = (ChatVH) holder;
         //分支判断当前的消息类型
         if(chatMsgBean.getMsgType() == Message.MSG_TYPE_WORD){
-            chatVH.txtContent.setText(chatMsgBean.getContent());
+            CharSequence chat = SmileyParser.getInstance(MyApp.myApp).replace(chatMsgBean.getContent());
+            chatVH.txtContent.setText(chat);
             chatVH.imgContent.setVisibility(View.GONE);
             chatVH.txtContent.setVisibility(View.VISIBLE);
         }else if(chatMsgBean.getMsgType() == Message.MSG_TYPE_IMAGE){

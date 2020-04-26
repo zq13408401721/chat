@@ -12,6 +12,12 @@
         android:layout_height="wrap_content"
         android:text="聊天"/>
 
+    <Button
+        android:id="@+id/btn_pop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="弹框"/>
+
     <TextView
         android:id="@+id/txt_span1"
         android:layout_width="match_parent"
@@ -32,7 +38,5 @@
         android:id="@+id/txt_face"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></TextView>
-
-
 
 </LinearLayout>
