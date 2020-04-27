@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mychat.widgets.ImgViewLoad xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:img_width="150"
+    app:img_height="200">
+    <ImageView
+        android:id="@+id/img_resourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"></ImageView>
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        style="@style/Widget.AppCompat.ProgressBar"
+        app:layout_constraintTop_toTopOf="@id/img_resourse"
+        app:layout_constraintLeft_toLeftOf="@id/img_resourse"
+        app:layout_constraintBottom_toBottomOf="@id/img_resourse"
+        app:layout_constraintRight_toRightOf="@id/img_resourse"></ProgressBar>
+</com.mychat.widgets.ImgViewLoad>

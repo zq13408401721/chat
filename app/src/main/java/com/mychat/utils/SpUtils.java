@@ -3,13 +3,13 @@ package com.mychat.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.mychat.MyApp;
+import com.mychat.apps.MyApp;
 
 public class SpUtils {
     private static SpUtils instance;
     private SharedPreferences sp;
     public SpUtils(){
-        sp = MyApp.myApp.getSharedPreferences("shop", Context.MODE_PRIVATE);
+        sp = MyApp.myApp.getSharedPreferences("chat", Context.MODE_PRIVATE);
     }
 
     public static SpUtils getInstance(){

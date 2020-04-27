@@ -1,7 +1,6 @@
 package com.mychat.adapters;
 
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mychat.MyApp;
+import com.mychat.apps.MyApp;
 import com.mychat.R;
 import com.mychat.SmileyParser;
 import com.mychat.common.Constant;
-import com.mychat.module.FaceListItemVo;
+import com.mychat.module.vo.FaceListItemVo;
 import com.mychat.utils.DpTools;
 
 import java.io.InputStream;
@@ -59,11 +58,11 @@ public class FaceListItemAdapter extends RecyclerView.Adapter {
         InputStream inputStream = MyApp.myApp.getResources().openRawResource(itemVo.getFaceId());
         BitmapDrawable drawable = new BitmapDrawable(inputStream);
         if(itemVo.getFaceType() == SmileyParser.FACE_TYPE_1){
-            drawable.setBounds(0,0,40,40);
+            drawable.setBounds(0,0,22,22);
         }else{
             drawable.setBounds(0,0,60,60);
         }
-        listVH.imgIcon.setImageDrawable(drawable);
+        listVH.imgIcon.setBackground(drawable);
         listVH.imgIcon.setTag(itemVo);
         listVH.imgIcon.setOnClickListener(new View.OnClickListener() {
             @Override

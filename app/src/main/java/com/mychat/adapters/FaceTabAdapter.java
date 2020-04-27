@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mychat.R;
-import com.mychat.module.FaceTabVo;
+import com.mychat.module.vo.FaceTabVo;
 
 import java.util.List;
 

@@ -42,15 +42,16 @@
             android:text="xxx"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"></TextView>
-        <ImageView
-            android:id="@+id/img_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_img"
             android:layout_width="150dp"
             android:layout_height="200dp"
-            android:src="@mipmap/ic_launcher"
-            android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:visibility="visible"></ImageView>
+            android:visibility="visible">
+            <include android:id="@+id/widgetImg" layout="@layout/widget_imgview_load"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

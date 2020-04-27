@@ -6,10 +6,9 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.util.Log;
 
-import com.mychat.module.FaceListItemVo;
-import com.mychat.module.FaceTabVo;
+import com.mychat.module.vo.FaceListItemVo;
+import com.mychat.module.vo.FaceTabVo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
 
 
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    //implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.7'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
@@ -62,5 +62,11 @@ dependencies {
     //implementation 'me.itangqi.waveloadingview:library:0.1.2'
 
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.3'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    //友盟的依赖包
+    implementation  'com.umeng.umsdk:analytics:8.0.0'
+    implementation  'com.umeng.umsdk:common:2.0.0'
 
 }

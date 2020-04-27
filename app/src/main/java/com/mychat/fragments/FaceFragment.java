@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.mychat.MyApp;
+import com.mychat.apps.MyApp;
 import com.mychat.R;
 import com.mychat.SmileyParser;
 import com.mychat.adapters.FaceListItemAdapter;
-import com.mychat.module.FaceListItemVo;
+import com.mychat.module.vo.FaceListItemVo;
 
 import java.util.List;
 

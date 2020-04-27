@@ -1,4 +1,4 @@
-package com.mychat.module;
+package com.mychat.module.vo;
 
 public class ChatMsgBean {
 
@@ -51,6 +51,16 @@ public class ChatMsgBean {
     private int isRead; //是否已读
 
     private String content; //消息内容
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    private int status; //消息状态 0 正常的消息 1异步的消息
 
 
 }

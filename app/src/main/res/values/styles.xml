@@ -7,5 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <!--imgviewload自定义属性-->
+    <declare-styleable name="ImgViewLoad">
+        <attr name="img_width" format="integer"></attr>
+        <attr name="img_height" format="integer"></attr>
+        <attr name="img_scaletype" format="string"></attr>
+    </declare-styleable>
 </resources>

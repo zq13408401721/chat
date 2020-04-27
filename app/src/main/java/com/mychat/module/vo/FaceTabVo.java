@@ -1,4 +1,4 @@
-package com.mychat.module;
+package com.mychat.module.vo;
 
 public class FaceTabVo {
 

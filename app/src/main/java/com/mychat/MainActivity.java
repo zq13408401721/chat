@@ -2,11 +2,9 @@ package com.mychat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,8 +12,6 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +22,7 @@ import android.widget.TextView;
 
 import com.mychat.anim.gif.AnimatedGifDrawable;
 import com.mychat.anim.gif.AnimatedImageSpan;
+import com.mychat.apps.MyApp;
 import com.mychat.common.Constant;
 import com.mychat.utils.SpUtils;
 import com.mychat.utils.SpannableUtils;
