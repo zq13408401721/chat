@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.viewpager.widget.ViewPager
+    <com.mychat.widgets.MyViewPager
         android:id="@+id/viewpager_imgs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.viewpager.widget.ViewPager>
+        android:layout_height="match_parent"></com.mychat.widgets.MyViewPager>
     <TextView
         android:id="@+id/txt_num"
         android:layout_width="wrap_content"

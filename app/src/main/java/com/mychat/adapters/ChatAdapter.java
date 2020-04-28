@@ -56,8 +56,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ChatMsgBean chatMsgBean = list.get(position);
         ChatVH chatVH = (ChatVH) holder;
         //分支判断当前的消息类型
-        if(chatMsgBean.getMsgType() == Message.MSG_TYPE_WORD){
+        if(chatMsgBean.getMsgType() == Message.MSG_TYPE_WORD){  //聊天的图文混排显示
             CharSequence chat = SmileyParser.getInstance(MyApp.myApp).replace(chatMsgBean.getContent());
+            chatVH.txtContent.setText(chat);
+            chatVH.imgContent.setVisibility(View.GONE);
+            chatVH.txtContent.setVisibility(View.VISIBLE);
+        }else if(chatMsgBean.getMsgType() == Message.MSG_TYPE_NORMALSMALE){  //带有动画的图文混排
+            CharSequence chat = SmileyParser.getInstance(MyApp.myApp).replace(chatVH.txtContent,chatMsgBean.getContent(),SmileyParser.FACE_TYPE_1);
+            chatVH.txtContent.setText(chat);
+            chatVH.imgContent.setVisibility(View.GONE);
+            chatVH.txtContent.setVisibility(View.VISIBLE);
+        }else if(chatMsgBean.getMsgType() == Message.MSG_TYPE_BIGSMAILE){  //聊天的大表情显示
+            CharSequence chat = SmileyParser.getInstance(MyApp.myApp).replace(chatVH.txtContent,chatMsgBean.getContent(),SmileyParser.FACE_TYPE_2);
             chatVH.txtContent.setText(chat);
             chatVH.imgContent.setVisibility(View.GONE);
             chatVH.txtContent.setVisibility(View.VISIBLE);

@@ -17,6 +17,7 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.mychat.ChatActivity;
 import com.mychat.R;
+import com.mychat.apps.GlideEngine;
 
 import java.util.List;
 
@@ -66,14 +67,18 @@ public class WidgetFragment extends Fragment {
         }
     }
 
+    /**
+     * pictureselector打开本地相册
+     */
     private void openPhoto(){
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
-                //.loadImageEngine(GlideEngine.createGlideEngine()) // Please refer to the Demo GlideEngine.java
+                .loadImageEngine(GlideEngine.createGlideEngine()) // Please refer to the Demo GlideEngine.java
                 .maxSelectNum(1)
                 .imageSpanCount(4)
                 .selectionMode(PictureConfig.MULTIPLE)
                 .forResult(PictureConfig.CHOOSE_REQUEST);
+
     }
 
 

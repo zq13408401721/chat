@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -35,6 +36,7 @@ import com.mychat.apps.MyApp;
 import com.mychat.common.Message;
 import com.mychat.fragments.FaceFragment;
 import com.mychat.fragments.ImageFragment;
+import com.mychat.fragments.PreviewFragment;
 import com.mychat.fragments.WidgetFragment;
 import com.mychat.module.HttpManager;
 import com.mychat.module.apis.UploadApi;
@@ -110,7 +112,6 @@ public class ChatActivity extends AppCompatActivity {
      * 聊天图片的预览popwindow实现
      * @param savedInstanceState
      */
-    PopupWindow photoWin;
     List<String> chatAllImages;
     List<ImageFragment> imgFragmentList;
 
@@ -147,10 +148,10 @@ public class ChatActivity extends AppCompatActivity {
             FaceFragment faceFragment = FaceFragment.getInstance(i, new FaceListItemAdapter.ListClick() {
                 @Override
                 public void onListClick(FaceListItemVo itemVo) {
-                    if(itemVo.getFaceType() == SmileyParser.FACE_TYPE_1){
+                    if(itemVo.getFaceType() == SmileyParser.FACE_TYPE_1){  //处理的是图文混排
                         addSmiley(itemVo);
-                    }else if(itemVo.getFaceType() == SmileyParser.FACE_TYPE_2){
-                        //发送表情
+                    }else if(itemVo.getFaceType() == SmileyParser.FACE_TYPE_2){ //发送表情
+                        sendBigSmaily(itemVo);
                     }
                 }
             });
@@ -327,8 +328,7 @@ public class ChatActivity extends AppCompatActivity {
             chatMsgBean.setMsgType(Message.MSG_TYPE_IMAGE);
         }else{}*/
         chatMsgBean.setContent(content);
-        chatMsgBean.setMsgType(Message.MSG_TYPE_WORD);
-
+        chatMsgBean.setMsgType(Message.MSG_TYPE_NORMALSMALE);
         int time = (int) (new Date().getTime()/1000);
         chatMsgBean.setTime(time);
 
@@ -370,6 +370,25 @@ public class ChatActivity extends AppCompatActivity {
         editChat.setSelection(selectPos);
     }
 
+    /**
+     * 处理发送大的表情
+     * @param itemVo
+     */
+    private void sendBigSmaily(FaceListItemVo itemVo){
+        //首先把选中的表情发给服务器
+
+        //把选择的表情插入到聊天列表
+        ChatMsgBean chatMsgBean = new ChatMsgBean();
+        chatMsgBean.setFromUid(uid);
+        //自己能看的本地图片地址
+        chatMsgBean.setContent(itemVo.getTag());
+        chatMsgBean.setMsgType(Message.MSG_TYPE_BIGSMAILE);
+        int time = (int) (new Date().getTime()/1000);
+        chatMsgBean.setTime(time);
+        msgList.add(chatMsgBean);
+        chatAdapter.notifyDataSetChanged();
+    }
+
     /********************************本地图库处理***************************************/
 
     private void sendImageChat(List<LocalMedia> list){
@@ -385,7 +404,6 @@ public class ChatActivity extends AppCompatActivity {
             chatMsgBean.setTime(time);
             msgList.add(chatMsgBean);
             chatAdapter.notifyDataSetChanged();
-
             uploadImage(item.getPath());
         }
     }
@@ -400,7 +418,6 @@ public class ChatActivity extends AppCompatActivity {
         String img_format = "image/jpg";
         String key = "2020";
         //sd卡图片文件
-        //File file = new File(Utils.getSDPath()+"/d.jpg");
         File file = new File(path);
         if(file.exists()){
             //创建一个RequestBody 封装文件格式以及文件内容
@@ -438,54 +455,19 @@ public class ChatActivity extends AppCompatActivity {
      * @param bean
      */
     private void previewImage(ChatMsgBean bean,View v){
-        if(photoWin == null){
-            chatAllImages = new ArrayList<>();
-            imgFragmentList = new ArrayList<>();
-            int currentPos=0;
-            for(ChatMsgBean item : msgList){
-                if(item.getMsgType() == Message.MSG_TYPE_IMAGE){
-                    chatAllImages.add(item.getContent());
-                    imgFragmentList.add(ImageFragment.getInstance(item.getContent()));
-                    if(item.getContent().equals(bean.getContent())){
-                        currentPos = chatAllImages.size()-1;
-                    }
+        chatAllImages = new ArrayList<>();
+        int currentPos=0;
+        for(ChatMsgBean item : msgList){
+            if(item.getMsgType() == Message.MSG_TYPE_IMAGE){
+                chatAllImages.add(item.getContent());
+                if(item.getContent().equals(bean.getContent())){
+                    currentPos = chatAllImages.size()-1;
                 }
             }
-
-            View view = LayoutInflater.from(this).inflate(R.layout.layout_preview_image,null);
-            photoWin = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            photoWin.setBackgroundDrawable(new BitmapDrawable());
-            photoWin.setFocusable(true);
-            photoWin.setOutsideTouchable(true);
-            TextView txtNum = view.findViewById(R.id.txt_num);
-            txtNum.setText((currentPos+1)+"/"+imgFragmentList.size());
-            ViewPager viewPager = view.findViewById(R.id.viewpager_imgs);
-            viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-                @NonNull
-                @Override
-                public Fragment getItem(int position) {
-                    updateImageSelect(txtNum,position);
-                    return imgFragmentList.get(position);
-                }
-
-                @Override
-                public int getCount() {
-                    return imgFragmentList.size();
-                }
-            });
-            photoWin.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    photoWin = null;
-                }
-            });
-            photoWin.showAtLocation(v, Gravity.CENTER,0,0);
         }
+        PreviewFragment previewFragment = PreviewFragment.newInstance((ArrayList<String>) chatAllImages,currentPos);
+        previewFragment.setStyle(DialogFragment.STYLE_NORMAL,R.style.Dialog_FullScreen);
+        previewFragment.show(getSupportFragmentManager(),"preview");
     }
-
-    private void updateImageSelect(TextView txt,int pos){
-        txt.setText((pos+1)+"/"+imgFragmentList.size());
-    }
-
 
 }

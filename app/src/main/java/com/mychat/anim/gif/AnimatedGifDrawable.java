@@ -9,8 +9,7 @@ import java.io.InputStream;
 
 
 /**
- *
- *
+ *gif图片解析
  */
 
 public class AnimatedGifDrawable extends AnimationDrawable {
@@ -18,7 +17,27 @@ public class AnimatedGifDrawable extends AnimationDrawable {
     private int mCurrentIndex = 0;
     private UpdateListener mListener;
 
-    public AnimatedGifDrawable(InputStream source, UpdateListener listener) {
+    public AnimatedGifDrawable(){
+
+    }
+
+    /**
+     * 不设置宽高
+     * @param source
+     * @param listener
+     */
+    public void onCreate(InputStream source,UpdateListener listener){
+        onCreate(source,listener,0,0);
+    }
+
+    /**
+     * 把gif资源文件转成动画
+     * @param source
+     * @param listener
+     * @param width
+     * @param height
+     */
+    public void onCreate(InputStream source, UpdateListener listener,int width,int height) {
         mListener = listener;
         GifDecoder decoder = new GifDecoder();
         decoder.read(source);
@@ -28,11 +47,19 @@ public class AnimatedGifDrawable extends AnimationDrawable {
             Bitmap bitmap = decoder.getFrame(i);
             BitmapDrawable drawable = new BitmapDrawable(bitmap);
             // Explicitly set the bounds in order for the frames to display
-            drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+            if(width > 0 && height > 0){
+                drawable.setBounds(0, 0, width, height);
+            }else{
+                drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+            }
             addFrame(drawable, decoder.getDelay(i));
             if (i == 0) {
                 // Also set the bounds for this container drawable
-                setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                if(width > 0 && height > 0){
+                    setBounds(0, 0, width, height);
+                }else{
+                    setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                }
             }
         }
     }

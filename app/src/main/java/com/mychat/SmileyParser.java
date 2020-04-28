@@ -5,8 +5,13 @@ import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.widget.TextView;
 
+import com.mychat.anim.gif.AnimatedGifDrawable;
+import com.mychat.anim.gif.AnimatedImageSpan;
+import com.mychat.apps.MyApp;
 import com.mychat.module.vo.FaceListItemVo;
 import com.mychat.module.vo.FaceTabVo;
 
@@ -27,6 +32,7 @@ public class SmileyParser {
     private String[] mSmileyIcons;
     private Pattern mPattern;
     private HashMap<String, Integer> mSmileyToRes;
+
     private List<FaceTabVo> faceTabList;
     private HashMap<Integer,List<FaceListItemVo>> allFaceMap;
 
@@ -189,7 +195,7 @@ public class SmileyParser {
     }
 
     /**
-     * 解析表情内容
+     * 解析图文混排非动画表情内容
      * @param text
      * @return
      */
@@ -198,10 +204,57 @@ public class SmileyParser {
         Matcher matcher = mPattern.matcher(text);
         while (matcher.find()) {
             int resId = mSmileyToRes.get(matcher.group());
-            builder.setSpan(new ImageSpan(mContext, resId),matcher.start(), matcher.end(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new ImageSpan(mContext, resId),matcher.start(), matcher.end(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);     //没有动画处理
         }
         return builder;
     }
+
+    /**
+     * 解析含有动画的表情包含(图文混排，大表情)
+     * @param txtView
+     * @param text
+     * @return
+     */
+    public CharSequence replace(TextView txtView,CharSequence text,int faceType){
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        Matcher matcher = mPattern.matcher(text);
+        while (matcher.find()) {
+            int resId = getSmailyIdByTag(matcher.group(),faceType);
+            if(resId == 0) continue;
+            int width=0,height=0;
+            //如果是图文混排的表情 修改显示表情的大小
+            if(faceType == FACE_TYPE_1){
+                width = height = 50;
+            }
+            AnimatedGifDrawable animatedGifDrawable = new AnimatedGifDrawable();
+            animatedGifDrawable.onCreate(MyApp.myApp.getResources().openRawResource(resId), new AnimatedGifDrawable.UpdateListener() {
+                @Override
+                public void update() {
+                    txtView.postInvalidate();
+                }
+            },width,height);
+            builder.setSpan(new AnimatedImageSpan(animatedGifDrawable),matcher.start(),matcher.end(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
+        return builder;
+    }
+
+    /**
+     * 获取当前动画表情ID
+     * @param tag
+     * @param faceType
+     * @return
+     */
+    private int getSmailyIdByTag(String tag,int faceType){
+        Integer key = faceType == FACE_TYPE_1 ? 0 : 1;
+        List<FaceListItemVo> temp = allFaceMap.get(key);
+        for(FaceListItemVo item:temp){
+            if(item.getTag().equals(tag)){
+                return item.getFaceId();
+            }
+        }
+        return 0;
+    }
+
 
     public CharSequence addSmaile(int resId){
         String str = "[0]";

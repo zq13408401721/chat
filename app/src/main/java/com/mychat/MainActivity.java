@@ -127,12 +127,20 @@ public class MainActivity extends AppCompatActivity {
         txtSpan3.setText(charSequence);
 
         String str = "xx图标";
-        AnimatedImageSpan imgSpan = new AnimatedImageSpan(new AnimatedGifDrawable(this.getResources().openRawResource(R.raw.aini), new AnimatedGifDrawable.UpdateListener() {
+        AnimatedGifDrawable animatedGifDrawable = new AnimatedGifDrawable();
+        /*AnimatedImageSpan imgSpan = new AnimatedImageSpan(new AnimatedGifDrawable().onCreate(this.getResources().openRawResource(R.raw.aini), new AnimatedGifDrawable.UpdateListener() {
             @Override
             public void update() {
                 txtFace.postInvalidate();
             }
-        }));
+        }););*/
+        animatedGifDrawable.onCreate(this.getResources().openRawResource(R.raw.aini), new AnimatedGifDrawable.UpdateListener() {
+            @Override
+            public void update() {
+                txtFace.postInvalidate();
+            }
+        });
+        AnimatedImageSpan imgSpan = new AnimatedImageSpan(animatedGifDrawable);
         SpannableString spannableString = new SpannableString(str);
         spannableString.setSpan(imgSpan,0,2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         txtFace.setText(spannableString);

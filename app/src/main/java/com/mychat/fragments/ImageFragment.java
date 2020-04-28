@@ -13,7 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.mychat.R;
 
 import butterknife.BindView;
@@ -24,6 +26,8 @@ public class ImageFragment extends Fragment {
     @BindView(R.id.img_big)
     PhotoView imgBig;
 
+    private SingleClick singleClick;
+
 
     public static ImageFragment getInstance(String url){
         ImageFragment fragment = new ImageFragment();
@@ -31,6 +35,10 @@ public class ImageFragment extends Fragment {
         bundle.putString("url",url);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    public void addSingleClickListener(SingleClick singleClick){
+        this.singleClick = singleClick;
     }
 
     @Nullable
@@ -48,6 +56,22 @@ public class ImageFragment extends Fragment {
         if(!TextUtils.isEmpty(url)){
             Glide.with(getContext()).load(url).into(imgBig);
         }
+
+        //设置photoview单击事件
+        PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(imgBig);
+        photoViewAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(ImageView view, float x, float y) {
+                //单击图片
+                if(singleClick != null){
+                    singleClick.click();
+                }
+            }
+        });
+    }
+
+    public interface SingleClick{
+        void click();
     }
 
 }

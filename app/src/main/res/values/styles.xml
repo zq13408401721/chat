@@ -7,6 +7,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="Dialog.FullScreen" parent="Theme.AppCompat.Dialog">
+        <item name="android:padding">0dp</item>
+        <item name="android:windowBackground">@color/black</item>
+    </style>
+
     <!--imgviewload自定义属性-->
     <declare-styleable name="ImgViewLoad">
         <attr name="img_width" format="integer"></attr>
