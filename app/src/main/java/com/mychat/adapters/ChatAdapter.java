@@ -105,6 +105,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+    /**
+     * 通过多布局实现消息聊天列表的分类
+     * @param position
+     * @return
+     */
     @Override
     public int getItemViewType(int position) {
         String _uid = list.get(position).getFromUid();

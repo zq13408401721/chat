@@ -125,12 +125,19 @@ public class SmileyParser {
      */
     private void buildFace(){
         allFaceMap = new HashMap<>();
-        List<FaceListItemVo> list_small = getFaceItemList(mSmileyTexts,DEFAULT_SMILEY_RES_IDS,FACE_TYPE_1);
+        List<FaceListItemVo> list_small = getFaceItemList(mSmileyTexts,DEFAULT_SMILEY_RES_IDS,FACE_TYPE_1);  //图文混排表情的整合
         allFaceMap.put(0,list_small);
-        List<FaceListItemVo> list_big = getFaceItemList(mSmileyIcons,DEFAULT_SMILEY_RES_ICONS,FACE_TYPE_2);
+        List<FaceListItemVo> list_big = getFaceItemList(mSmileyIcons,DEFAULT_SMILEY_RES_ICONS,FACE_TYPE_2);  //大表情的整合
         allFaceMap.put(1,list_big);
     }
 
+    /**
+     * 把表情整合到list集合
+     * @param arr
+     * @param ids
+     * @param faceType
+     * @return
+     */
     private List<FaceListItemVo> getFaceItemList(String[] arr,int[] ids,int faceType){
         List<FaceListItemVo> list = new ArrayList<>();
         for(int i=0; i<arr.length; i++){
@@ -148,6 +155,9 @@ public class SmileyParser {
         return list;
     }
 
+    /**
+     * 初始化表情分类导航的数据
+     */
     private void initFaceTab(){
         faceTabList = new ArrayList<>();
         for(int i=0; i<faceTabArr.length; i++){

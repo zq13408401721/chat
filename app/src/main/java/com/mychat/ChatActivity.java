@@ -309,6 +309,9 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 发送消息
+     */
     private void sendMsg(){
 
         String content = editChat.getText().toString();
@@ -346,7 +349,7 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void addSmiley(FaceListItemVo itemVo){
         String str=null;
-        int selectPos;
+        int selectPos;  //用来计算插入表情以后光标新的位置
         //获取editChat光标所在的位置
         int start = editChat.getSelectionStart();
         if(editChat.getText().length() == 0 || start >= editChat.getText().toString().length()){  //在输入文本后面插入
@@ -404,6 +407,7 @@ public class ChatActivity extends AppCompatActivity {
             chatMsgBean.setTime(time);
             msgList.add(chatMsgBean);
             chatAdapter.notifyDataSetChanged();
+            //上传图片到资源服务器
             uploadImage(item.getPath());
         }
     }
