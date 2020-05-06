@@ -131,7 +131,7 @@ public class HttpManager {
             Request request = chain.request().newBuilder()
                     .addHeader("Connection","keep-alive")
                     .addHeader("Client-Type","ANDROID")
-                    .addHeader("X-Nideshop-Token", SpUtils.getInstance().getString("token"))
+                    .addHeader("x-token", SpUtils.getInstance().getString("token"))
                     .build();
             return chain.proceed(request);
         }

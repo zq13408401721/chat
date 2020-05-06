@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openPopwindow(){
         //if(popupWindow == null){
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_pop,null);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_popwindow,null);
             popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindow.setBackgroundDrawable(new BitmapDrawable());
             popupWindow.setFocusable(true);
