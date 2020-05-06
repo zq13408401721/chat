@@ -1,19 +1,14 @@
 package com.mychat;
 
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,10 +28,10 @@ import com.mychat.adapters.FaceListItemAdapter;
 import com.mychat.adapters.FaceTabAdapter;
 import com.mychat.apps.MyApp;
 import com.mychat.common.Message;
-import com.mychat.fragments.FaceFragment;
-import com.mychat.fragments.ImageFragment;
-import com.mychat.fragments.PreviewFragment;
-import com.mychat.fragments.WidgetFragment;
+import com.mychat.fragments.chat.FaceFragment;
+import com.mychat.fragments.chat.ImageFragment;
+import com.mychat.fragments.chat.PreviewFragment;
+import com.mychat.fragments.chat.WidgetFragment;
 import com.mychat.module.HttpManager;
 import com.mychat.module.apis.UploadApi;
 import com.mychat.module.vo.ChatMsgBean;
@@ -58,7 +52,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import retrofit2.Retrofit;
 
 public class ChatActivity extends AppCompatActivity {
 

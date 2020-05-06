@@ -20,8 +20,15 @@ public class Constant {
 
     public static FaceListItemVo curItemVo;
 
+    //上传接口的基础地址
     public static final String BASE_UPLOAD_IMAGE_URL = "http://yun918.cn/study/public/";
+    //聊天服务的基础地址
+    public static final String BASE_CHAT_URL = "http://cdwan.cn:9001/";
 
+
+    public static void setCurItemVo(FaceListItemVo curItemVo) {
+        Constant.curItemVo = curItemVo;
+    }
 
     //网络缓存的地址
     public static final String PATH_DATA = MyApp.myApp.getCacheDir().getAbsolutePath() + File.separator + "data";

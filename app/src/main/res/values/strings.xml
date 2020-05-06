@@ -36,4 +36,8 @@
         <item>[icon35]</item>
         <item>[icon40]</item>
     </string-array>
+
+
+    <string name="login_tips">登录领取福利</string>
+
 </resources>

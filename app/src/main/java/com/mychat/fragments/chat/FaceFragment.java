@@ -1,4 +1,4 @@
-package com.mychat.fragments;
+package com.mychat.fragments.chat;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

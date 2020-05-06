@@ -17,9 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mychat.anim.gif.AnimatedGifDrawable;
 import com.mychat.anim.gif.AnimatedImageSpan;
 import com.mychat.apps.MyApp;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtFace;
     private Button btnTalk;
     private Button btnPop;
+    private ImageView img;
 
     PopupWindow popupWindow;
     List<String> list;
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         txtSpan3 = findViewById(R.id.txt_span3);
         txtFace = findViewById(R.id.txt_face);
         btnPop = findViewById(R.id.btn_pop);
+        img = findViewById(R.id.img);
         smileyParser = SmileyParser.getInstance(MyApp.myApp);
 
         btnTalk.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 openPopwindow();
             }
         });
+
+        Glide.with(this).load(R.mipmap.ic_launcher).into(img);
 
     }
 

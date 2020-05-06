@@ -1,4 +1,4 @@
-package com.mychat.fragments;
+package com.mychat.fragments.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.mychat.ChatActivity;
 import com.mychat.R;
 import com.mychat.apps.GlideEngine;
 

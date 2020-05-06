@@ -4,6 +4,7 @@ import android.util.Log;
 
 
 import com.mychat.common.Constant;
+import com.mychat.module.apis.ChatApi;
 import com.mychat.module.apis.UploadApi;
 import com.mychat.utils.SpUtils;
 import com.mychat.utils.SystemUtils;
@@ -34,8 +35,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class HttpManager {
 
-
+    /**
+     * 上传接口
+     */
     UploadApi uploadApi;
+
+    /**
+     * 聊天接口
+     */
+    ChatApi chatApi;
+
 
     private static volatile HttpManager instance;
     public static HttpManager getInstance(){
@@ -89,6 +98,17 @@ public class HttpManager {
             uploadApi = getRetrofit(Constant.BASE_UPLOAD_IMAGE_URL).create(UploadApi.class);
         }
         return uploadApi;
+    }
+
+    /**
+     * 聊天的api接口
+     * @return
+     */
+    public ChatApi getChatApi(){
+        if(chatApi == null){
+            chatApi = getRetrofit(Constant.BASE_CHAT_URL).create(ChatApi.class);
+        }
+        return chatApi;
     }
 
     /**

@@ -38,5 +38,9 @@
         android:id="@+id/txt_face"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></TextView>
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ImageView>
 
 </LinearLayout>

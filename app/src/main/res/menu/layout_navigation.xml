@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_home"
+        android:icon="@mipmap/ic_launcher"
+        android:title="主页"></item>
+    <item android:id="@+id/menu_trends"
+        android:icon="@mipmap/ic_launcher"
+        android:title="动态"></item>
+    <item android:id="@+id/menu_own"
+        android:icon="@mipmap/ic_launcher"
+        android:title="我的"></item>
+</menu>
