@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.mychat.R;
 import com.mychat.activitys.login.LoginActivity;
 import com.mychat.activitys.login.SettingActivitiy;
+import com.mychat.activitys.own.UserDetailsActivity;
 import com.mychat.base.BaseFragment;
 import com.mychat.interfaces.IBasePersenter;
 import com.mychat.utils.SpUtils;
@@ -42,6 +43,8 @@ public class OwnFragment extends BaseFragment {
     ConstraintLayout layoutUserinfo;
     @BindView(R.id.txt_setting)
     TextView txtSetting;
+    @BindView(R.id.img_details)
+    ImageView imgDetails;
 
     @Override
     protected int getLayout() {
@@ -78,7 +81,7 @@ public class OwnFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.txt_login,R.id.txt_setting})
+    @OnClick({R.id.txt_login,R.id.txt_setting,R.id.img_details})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.txt_login:
@@ -86,6 +89,9 @@ public class OwnFragment extends BaseFragment {
                 break;
             case R.id.txt_setting:
                 gotoSetting();
+                break;
+            case R.id.img_details:
+                gotoDetails();
                 break;
         }
     }
@@ -103,6 +109,14 @@ public class OwnFragment extends BaseFragment {
      */
     private void gotoSetting(){
         Intent intent = new Intent(context, SettingActivitiy.class);
+        startActivityForResult(intent,REQUEST_LOGIN_CODE);
+    }
+
+    /**
+     * 进入详情页面
+     */
+    private void gotoDetails(){
+        Intent intent = new Intent(context, UserDetailsActivity.class);
         startActivityForResult(intent,REQUEST_LOGIN_CODE);
     }
 

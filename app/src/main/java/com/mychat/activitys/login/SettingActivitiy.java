@@ -1,5 +1,7 @@
 package com.mychat.activitys.login;
 
+import android.view.View;
+
 import com.mychat.base.BaseActivity;
 import com.mychat.interfaces.IBasePersenter;
 

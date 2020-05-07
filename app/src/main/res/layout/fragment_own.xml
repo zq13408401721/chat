@@ -27,7 +27,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:visibility="visible">
+        android:visibility="gone">
         <ImageView
             android:id="@+id/img_head"
             android:layout_width="80dp"
@@ -41,7 +41,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            app:layout_constraintLeft_toRightOf="@id/img_head">
+            app:layout_constraintLeft_toRightOf="@id/img_head"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,6 +86,15 @@
                 android:layout_marginTop="20dp"
                 android:textSize="20sp"
                 android:textColor="#000000"></TextView>
+            <ImageView
+                android:id="@+id/img_details"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/renew"
+                app:layout_constraintTop_toTopOf="@id/txt_nickname"
+                app:layout_constraintBottom_toBottomOf="@id/txt_nickname"
+                app:layout_constraintLeft_toRightOf="@id/txt_nickname"
+                android:layout_marginLeft="5dp"></ImageView>
             <TextView
                 android:id="@+id/txt_user_sign"
                 android:layout_width="wrap_content"
