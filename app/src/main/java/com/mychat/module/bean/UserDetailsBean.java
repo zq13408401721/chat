@@ -55,6 +55,16 @@ public class UserDetailsBean {
         private Object phone;
         private Object sign;
 
+        public Object getAge() {
+            return age;
+        }
+
+        public void setAge(Object age) {
+            this.age = age;
+        }
+
+        private Object age;
+
         public String getUsername() {
             return username;
         }
