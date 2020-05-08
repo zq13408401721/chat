@@ -30,9 +30,9 @@
             </intent-filter>
         </activity>
 
-        <service
+        <!--<service
             android:name=".services.ChatService"
-            android:process="chatserver" />
+            android:process="chatserver" />-->
     </application>
 
 </manifest>
