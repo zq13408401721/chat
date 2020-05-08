@@ -9,6 +9,7 @@
     <include layout="@layout/layout_titles"></include>
     <!--头像-->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
