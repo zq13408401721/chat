@@ -26,8 +26,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="80dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:visibility="gone">
+        android:layout_marginRight="10dp">
         <ImageView
             android:id="@+id/img_head"
             android:layout_width="80dp"
@@ -41,8 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            app:layout_constraintLeft_toRightOf="@id/img_head"
-            android:visibility="gone">
+            app:layout_constraintLeft_toRightOf="@id/img_head">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

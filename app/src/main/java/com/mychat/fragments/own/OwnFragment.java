@@ -73,10 +73,10 @@ public class OwnFragment extends BaseFragment {
     private void updateLoginState(){
         String username = SpUtils.getInstance().getString("username");
         if(!TextUtils.isEmpty(username)){
-            layoutUserinfo.setVisibility(View.VISIBLE);
+            layoutLogin.setVisibility(View.VISIBLE);
             layoutNoLogin.setVisibility(View.GONE);
         }else{
-            layoutUserinfo.setVisibility(View.GONE);
+            layoutLogin.setVisibility(View.GONE);
             layoutNoLogin.setVisibility(View.VISIBLE);
         }
     }
@@ -135,6 +135,8 @@ public class OwnFragment extends BaseFragment {
      * 刷新用户数据
      */
     private void  updateUserInfo(){
+        layoutLogin.setVisibility(View.VISIBLE);
+        layoutNoLogin.setVisibility(View.GONE);
         //用户头像
         String headUrl = SpUtils.getInstance().getString("avater");
         if(!TextUtils.isEmpty(headUrl)){

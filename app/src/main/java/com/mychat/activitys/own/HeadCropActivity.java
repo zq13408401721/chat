@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,8 +92,14 @@ public class HeadCropActivity extends BaseActivity {
         if(file.exists()){
             //创建一个RequestBody 封装文件格式以及文件内容
             RequestBody requestFile = MultipartBody.create(MediaType.parse(img_format),file);
+            String filename="head.jpg";
+            try{
+                filename = URLEncoder.encode(file.getName(),"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             //创建一个MultipartBody.Part 封装的文件数据（文件流） file参数是给后台接口读取文件用，file.getName() 保存到后台的文件名字
-            MultipartBody.Part part = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+            MultipartBody.Part part = MultipartBody.Part.createFormData("file", filename,requestFile);
             //设置对应的key application/json; charset=utf-8
             RequestBody key_file = RequestBody.create(MediaType.parse("multipart/form-data"),key);
             //通过requestbody传值到后台接口

@@ -54,6 +54,7 @@ public class LoginActivity extends BaseActivity<LoginConstract.Persenter> implem
 
     @Override
     protected void initView() {
+        radiobtn.setChecked(true);
         String str1 = "已阅读并同意";
         String str2 = "《用户服务协议》";
         String str3 = "和";

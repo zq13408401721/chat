@@ -1,6 +1,7 @@
 package com.mychat.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mychat.R;
 import com.mychat.module.vo.TrendsVo;
 
@@ -64,6 +66,9 @@ public class TrendsPublishAdapter extends RecyclerView.Adapter {
             });
         }else if(holder instanceof VHNormal){
             VHNormal vhNormal = (VHNormal) holder;
+            if(!TextUtils.isEmpty(list.get(position).getPath())){
+                Glide.with(context).load(list.get(position).getPath()).into(vhNormal.img);
+            }
             vhNormal.txtClose.setTag(position);
             vhNormal.txtClose.setOnClickListener(new View.OnClickListener() {
                 @Override

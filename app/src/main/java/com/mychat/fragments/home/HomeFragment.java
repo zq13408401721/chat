@@ -1,12 +1,13 @@
 package com.mychat.fragments.home;
 
+import com.mychat.R;
 import com.mychat.base.BaseFragment;
 import com.mychat.interfaces.IBasePersenter;
 
 public class HomeFragment extends BaseFragment {
     @Override
     protected int getLayout() {
-        return 0;
+        return R.layout.fragment_home;
     }
 
     @Override

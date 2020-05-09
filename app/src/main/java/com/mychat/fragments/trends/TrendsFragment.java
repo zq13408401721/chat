@@ -1,9 +1,11 @@
 package com.mychat.fragments.trends;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.mychat.R;
+import com.mychat.activitys.trends.TrendsActivity;
 import com.mychat.base.BaseFragment;
 import com.mychat.interfaces.IBasePersenter;
 
@@ -44,6 +46,7 @@ public class TrendsFragment extends BaseFragment {
     }
 
     private void openPublish(){
-
+        Intent intent = new Intent(context, TrendsActivity.class);
+        startActivity(intent);
     }
 }

@@ -93,11 +93,6 @@ public class IndexActivity extends AppCompatActivity {
     private void showUserTips(){
         if(alertDialog == null) {
             View view = LayoutInflater.from(this).inflate(R.layout.layout_pop, null);
-            alertDialog = new AlertDialog.Builder(this)
-                    .setView(view)
-                    .setCancelable(false)
-                    .create();
-            alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             TextView txtWord = view.findViewById(R.id.txt_word);
             TextView txtCancel = view.findViewById(R.id.txt_cancel);
             TextView txtOk = view.findViewById(R.id.txt_ok);
@@ -116,7 +111,6 @@ public class IndexActivity extends AppCompatActivity {
                     SpUtils.getInstance().setValue("first",true);
                 }
             });
-
             String str1 = "欢迎您使用虎牙直播！\n我们将通过";
             String str2 = "《虎牙直播App隐私政策》";
             String str3 = "帮助您了解我们收集、使用、存储和共享个人信息的情况，以及您所享有的相关去权利。";
@@ -140,6 +134,11 @@ public class IndexActivity extends AppCompatActivity {
             builder.append(spannableString3);
             txtWord.setText(builder);
             txtWord.setMovementMethod(LinkMovementMethod.getInstance());
+            alertDialog = new AlertDialog.Builder(this)
+                    .setView(view)
+                    .setCancelable(false)
+                    .create();
+            alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             alertDialog.show();
         }
     }

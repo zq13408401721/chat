@@ -77,6 +77,7 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
         //判断上一次是否有保存的草稿信息  从sp中去获取 json
         String username = SpUtils.getInstance().getString("username");
         if(!TextUtils.isEmpty(username)){
+            txtUsername.setText(username);
             //获取sp中保存的草稿
             String json = SpUtils.getInstance().getString(username);
             if(!TextUtils.isEmpty(json)){
@@ -98,6 +99,8 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
         trendsPublishAdapter = new TrendsPublishAdapter(this,list);
         recyImgs.setLayoutManager(new GridLayoutManager(this,3));
         recyImgs.setAdapter(trendsPublishAdapter);
+        trendsPublishAdapter.addOnClickListener(this);
+
     }
 
     @Override
@@ -124,7 +127,7 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
                 .loadImageEngine(GlideEngine.createGlideEngine())
-                .selectionMode(PictureConfig.SINGLE)
+                .selectionMode(PictureConfig.MULTIPLE)
                 .selectionMedia(selectList)
                 .maxSelectNum(9)
                 .imageSpanCount(4)
@@ -187,7 +190,7 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
             String content = editWord.getText().toString();
             //判断当前的文本是否有输入内容，列表是否有图片数据
-            if(!TextUtils.isEmpty(content) || this.list.size()>0){
+            if(!TextUtils.isEmpty(content) || this.list.size()>1){
                 openSaveDialog();
                 //不执行父类点击事件
                 return true;

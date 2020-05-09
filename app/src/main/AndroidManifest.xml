@@ -17,12 +17,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activitys.web.WebActivity"></activity>
-        <activity android:name=".IndexActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".HandlerActivity" />
+        <activity android:name=".activitys.login.SettingActivitiy" />
+        <activity android:name=".activitys.login.LoginActivity"/>
+        <activity android:name=".activitys.trends.TrendsActivity"/>
+        <activity android:name=".activitys.own.UserDetailsActivity"/>
+        <activity android:name=".activitys.own.HeadCropActivity"/>
         <activity
             android:name=".ChatActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".IndexActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

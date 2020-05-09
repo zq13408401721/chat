@@ -191,6 +191,7 @@ public class UserDetailsActivity extends BaseActivity<UserConstact.DetailsPersen
                 if(selectList.size() == 0) return;
                 //打开图片剪切界面 图片上传
                 Intent intent = new Intent(UserDetailsActivity.this,HeadCropActivity.class);
+                intent.putExtra("img_path",selectList.get(0).getPath());
                 startActivityForResult(intent,CODE_HEADCROPACTIVITY);
                 break;
             case CODE_HEADCROPACTIVITY:
