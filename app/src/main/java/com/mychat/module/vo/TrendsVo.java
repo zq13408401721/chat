@@ -18,7 +18,7 @@ public class TrendsVo {
         this.path = path;
     }
 
-    private int type; //0 无用  1有用
+    private int type; //0 无用(加号)  1有用
     private String path; //图片的本地路径
 
 }
