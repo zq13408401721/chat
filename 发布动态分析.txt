@@ -14,3 +14,17 @@
     1)最大只能加9张
     2)先添加3张，然后再接着添加（只能加6张）
     3)先添加的3张图片有修改，需要维护这个数据
+
+
+4.保存草稿的json数据结构  key-value(sp) key:username  value:json结构
+ {
+    word:"xxxxxxxx",
+    imgs:[
+        {
+            path:"xxxx/xx.jpg",
+        },
+        {
+            path:"xxxxx/xx1.jpg",
+        }
+    ]
+ }

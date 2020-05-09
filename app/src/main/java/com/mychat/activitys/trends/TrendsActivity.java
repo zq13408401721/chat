@@ -1,7 +1,11 @@
 package com.mychat.activitys.trends;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -11,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -20,7 +25,13 @@ import com.mychat.adapters.TrendsPublishAdapter;
 import com.mychat.apps.GlideEngine;
 import com.mychat.base.BaseActivity;
 import com.mychat.interfaces.IBasePersenter;
+import com.mychat.module.vo.SaveDataBean;
 import com.mychat.module.vo.TrendsVo;
+import com.mychat.utils.SpUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +75,24 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
         selectList = new ArrayList<>();
         list = new ArrayList<>();
         //判断上一次是否有保存的草稿信息  从sp中去获取 json
+        String username = SpUtils.getInstance().getString("username");
+        if(!TextUtils.isEmpty(username)){
+            //获取sp中保存的草稿
+            String json = SpUtils.getInstance().getString(username);
+            if(!TextUtils.isEmpty(json)){
+                SaveDataBean bean = new Gson().fromJson(json,SaveDataBean.class);
+                if(!TextUtils.isEmpty(bean.getWord())){
+                    editWord.setText(bean.getWord());
+                }
+                //图片的处理
+                for(SaveDataBean.ImgsBean item : bean.getImgs()){
+                    TrendsVo trendsVo = new TrendsVo();
+                    trendsVo.setPath(item.getPath());
+                    trendsVo.setType(1);
+                    list.add(trendsVo);
+                }
+            }
+        }
         //添加加号按钮
         list.add(getAddTrendsItem());
         trendsPublishAdapter = new TrendsPublishAdapter(this,list);
@@ -153,7 +182,68 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
         trendsPublishAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            String content = editWord.getText().toString();
+            //判断当前的文本是否有输入内容，列表是否有图片数据
+            if(!TextUtils.isEmpty(content) || this.list.size()>0){
+                openSaveDialog();
+                //不执行父类点击事件
+                return true;
+            }
+        }
+        //继续执行父类其他点击事件
+        return super.onKeyUp(keyCode, event);
+    }
 
+    /**
+     * 打开提示保存草稿的弹框
+     */
+    private void openSaveDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("是否保存草稿？");
+        builder.setPositiveButton("放弃", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("保存", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String saveData = getSaveData();
+                String username = SpUtils.getInstance().getString("username");
+                //保存草稿到本地
+                if(!TextUtils.isEmpty(username)){
+                    SpUtils.getInstance().setValue(username,saveData);
+                }
+                finish();
+            }
+        });
+    }
 
-
+    /**
+     * 组装需要保存的草稿数据
+     * @return
+     */
+    private String getSaveData(){
+        JSONObject jsonObject = new JSONObject();
+        String word = editWord.getText().toString();
+        try {
+            //放入输入的文本内容
+            jsonObject.put("word",word);
+            //放入图片
+            JSONArray imgs = new JSONArray();
+            for(TrendsVo item : list){
+                JSONObject img = new JSONObject();
+                img.put("path",item.getPath());
+                imgs.put(img);
+            }
+            jsonObject.put("imgs",imgs);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
+    }
 }
