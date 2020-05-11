@@ -39,6 +39,7 @@
             android:layout_marginBottom="5dp"></TextView>
 
         <TextView
+            android:id="@+id/txt_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"

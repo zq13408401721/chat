@@ -5,9 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,21 +28,37 @@ import com.mychat.adapters.TrendsPublishAdapter;
 import com.mychat.apps.GlideEngine;
 import com.mychat.base.BaseActivity;
 import com.mychat.interfaces.IBasePersenter;
+import com.mychat.interfaces.trends.TrendsStract;
+import com.mychat.module.HttpManager;
+import com.mychat.module.apis.UploadApi;
+import com.mychat.module.bean.PublishTrendsBean;
 import com.mychat.module.vo.SaveDataBean;
 import com.mychat.module.vo.TrendsVo;
+import com.mychat.persenters.trends.TrendsPersenter;
 import com.mychat.utils.SpUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
-public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter.OpenPhoto {
+public class TrendsActivity extends BaseActivity<TrendsStract.Persenter> implements TrendsPublishAdapter.OpenPhoto, TrendsStract.View {
     @BindView(R.id.txt_username)
     TextView txtUsername;
     @BindView(R.id.layout_title)
@@ -48,6 +67,8 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
     EditText editWord;
     @BindView(R.id.recy_imgs)
     RecyclerView recyImgs;
+    @BindView(R.id.txt_send)
+    TextView txtSend;
 
     TrendsPublishAdapter trendsPublishAdapter;
     List<TrendsVo> list;
@@ -56,6 +77,7 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
      * 当前本地图片选择器的内容
      */
     List<LocalMedia> selectList;
+    Map<String,String> upLoadImgs;
 
     @Override
     protected int getLayout() {
@@ -104,8 +126,8 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
     }
 
     @Override
-    protected IBasePersenter createPersenter() {
-        return null;
+    protected TrendsStract.Persenter createPersenter() {
+        return new TrendsPersenter();
     }
 
 
@@ -248,5 +270,136 @@ public class TrendsActivity extends BaseActivity implements TrendsPublishAdapter
             e.printStackTrace();
         }
         return jsonObject.toString();
+    }
+
+    @OnClick(R.id.txt_send)
+    public void onViewClicked(View view){
+        switch (view.getId()){
+            case R.id.txt_send:
+                checkSendTrends();
+                break;
+        }
+    }
+
+    /**
+     * 检查发送动态数据
+     */
+    private void checkSendTrends(){
+        String content = editWord.getText().toString();
+        if(TextUtils.isEmpty(content) && list.size() == 1){
+            Toast.makeText(this,"请正确输入你要发布的内容",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        upLoadImgs = new HashMap<String, String>();
+        /**
+         * 图片的上传
+         */
+        if(list.size() > 1) {
+            for (int i = 0; i < list.size() - 1; i++) {
+                String currentThreadId = "";
+                int finalI = i;
+                String finalCurrentThreadId = currentThreadId;  //奇怪的操作
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        uploadImage(finalCurrentThreadId, list.get(finalI).getPath());
+                    }
+                });
+                currentThreadId = String.valueOf(thread.getId());
+                thread.start();
+            }
+        }else{
+            sendTrends();
+        }
+
+    }
+
+    /**
+     * 发布动态返回结果
+     * @param result
+     */
+    @Override
+    public void sendTrendsReturn(PublishTrendsBean result) {
+        if(result.getErr() == 30000){
+            //关闭发布动态的页面
+            finish();
+        }
+    }
+
+    /********************************图片上传********************************/
+    private void uploadImage(final String threadid,String path){
+        String img_format = "image/jpg";
+        String key = SpUtils.getInstance().getString("username");
+        //sd卡图片文件
+        File file = new File(path);
+        if(file.exists()){
+            //创建一个RequestBody 封装文件格式以及文件内容
+            RequestBody requestFile = MultipartBody.create(MediaType.parse(img_format),file);
+            String filename="head.jpg";
+            try{
+                filename = URLEncoder.encode(file.getName(),"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            //创建一个MultipartBody.Part 封装的文件数据（文件流） file参数是给后台接口读取文件用，file.getName() 保存到后台的文件名字
+            MultipartBody.Part part = MultipartBody.Part.createFormData("file", filename,requestFile);
+            //设置对应的key application/json; charset=utf-8
+            RequestBody key_file = RequestBody.create(MediaType.parse("multipart/form-data"),key);
+            //通过requestbody传值到后台接口
+            //RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),key);
+            //创建retrofit
+            UploadApi uploadApi = HttpManager.getInstance().getUploadApi();
+            retrofit2.Call<ResponseBody> call = uploadApi.uploadFile(key_file,part);
+            call.enqueue(new retrofit2.Callback<ResponseBody>() {
+                @Override
+                public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    Log.i("onResponse",response.body().toString());
+                    try {
+                        String result = response.body().string();
+                        //更新到数据服务器 逻辑服务器 把得到的图片的外网路径回传到详情页面，由详情页面处理用户数据的接口更新
+                        JSONObject jsonObj = new JSONObject(result);
+                        String imgUrl = jsonObj.getJSONObject("data").getString("url");
+                        upLoadImgs.put(threadid,imgUrl);
+                        //判断上传是否完成
+                        checkUpLoadOver();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                    Log.i("onFailure",t.getMessage());
+                }
+            });
+        }else{
+            Toast.makeText(this,"找不到本地文件",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 判断上传是否完成
+     */
+    private void checkUpLoadOver(){
+        if(upLoadImgs.size() == list.size()-1){
+            sendTrends();
+        }
+    }
+
+    /**
+     * 发送数据
+     */
+    private void sendTrends(){
+        String content = editWord.getText().toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for(String value : upLoadImgs.values()){
+            stringBuilder.append(value);
+            stringBuilder.append("$");
+        }
+        //删除尾部多余的$
+        if(stringBuilder.length() > 0) stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        persenter.sendTrends(content,stringBuilder.toString());
     }
 }

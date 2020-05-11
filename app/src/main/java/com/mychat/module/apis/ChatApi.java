@@ -1,6 +1,7 @@
 package com.mychat.module.apis;
 
 import com.mychat.module.bean.DetailsUpdateBean;
+import com.mychat.module.bean.PublishTrendsBean;
 import com.mychat.module.bean.UserDetailsBean;
 import com.mychat.module.bean.UserInfoBean;
 
@@ -32,5 +33,15 @@ public interface ChatApi {
     @FormUrlEncoded
     Flowable<DetailsUpdateBean> updateUserDetails(@FieldMap Map<String,String> map);
 
+
+    /**
+     * 发布动态接口
+     * @param content 文字内容
+     * @param resources  图片地址，多张图以$拼接
+     * @return
+     */
+    @POST("trends/sendTrends")
+    @FormUrlEncoded
+    Flowable<PublishTrendsBean> sendTrends(@Field("content") String content,@Field("resources") String resources);
 
 }
