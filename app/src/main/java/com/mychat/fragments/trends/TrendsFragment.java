@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mychat.R;
@@ -55,21 +56,23 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
 
         list = new ArrayList<>();
         trendsAdapter = new TrendsAdapter(list,context);
-        recyTrends.setLayoutManager(new GridLayoutManager(context,3));
+        recyTrends.setLayoutManager(new LinearLayoutManager(context));
         recyTrends.setAdapter(trendsAdapter);
 
         //刷新的监听
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
+                page = 1;
+                persenter.queryTrends(page,size,trendsid);
             }
         });
         //加载更多的监听
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+                page ++;
+                persenter.queryTrends(page,size,trendsid);
             }
         });
 
@@ -105,6 +108,18 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
     public void queryTrendsReturn(TrendsBean trendsBean) {
         if(trendsBean.getErr() == 200){
             //trendsBean
+            if(trendsBean.getData() != null && trendsBean.getData().size() > 0){
+                //page为1刷新当前页面的数据
+                if(page == 1){
+                    refreshLayout.finishRefresh();
+                    //向列表的头中插入数据
+                    trendsAdapter.refreshList(trendsBean.getData());
+                }else{
+                    refreshLayout.finishLoadMore();
+                    //向列表的尾部插入数据
+                    trendsAdapter.updata(trendsBean.getData());
+                }
+            }
         }
     }
 }

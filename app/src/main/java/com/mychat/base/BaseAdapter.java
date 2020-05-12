@@ -63,11 +63,12 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+
     /**
      * 分页加载数据的刷新
      */
     public void refreshList(List<T> list){
-        mDatas.addAll(list);
+        mDatas.addAll(0,list);
         notifyDataSetChanged();
     }
 

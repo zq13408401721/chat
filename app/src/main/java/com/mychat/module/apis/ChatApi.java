@@ -14,6 +14,7 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ChatApi {
 
@@ -43,7 +44,7 @@ public interface ChatApi {
      * @return
      */
     @GET("trends/queryTrends")
-    Flowable<TrendsBean> queryTrends(@Field("page") int page,@Field("size") int size,@Field("trendsid") int trendsid);
+    Flowable<TrendsBean> queryTrends(@Query("page") int page, @Query("size") int size, @Query("trendsid") int trendsid);
 
 
     /**
