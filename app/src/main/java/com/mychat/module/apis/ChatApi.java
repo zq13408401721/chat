@@ -2,6 +2,7 @@ package com.mychat.module.apis;
 
 import com.mychat.module.bean.DetailsUpdateBean;
 import com.mychat.module.bean.PublishTrendsBean;
+import com.mychat.module.bean.TrendsBean;
 import com.mychat.module.bean.UserDetailsBean;
 import com.mychat.module.bean.UserInfoBean;
 
@@ -32,6 +33,17 @@ public interface ChatApi {
     @POST("user/updateinfo")
     @FormUrlEncoded
     Flowable<DetailsUpdateBean> updateUserDetails(@FieldMap Map<String,String> map);
+
+
+    /**
+     * 获取动态
+     * @param page
+     * @param size
+     * @param trendsid
+     * @return
+     */
+    @GET("trends/queryTrends")
+    Flowable<TrendsBean> queryTrends(@Field("page") int page,@Field("size") int size,@Field("trendsid") int trendsid);
 
 
     /**
