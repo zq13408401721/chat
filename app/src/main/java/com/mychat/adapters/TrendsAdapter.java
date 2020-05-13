@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -68,5 +69,21 @@ public class TrendsAdapter extends BaseAdapter {
         }else{
             recyImgs.setVisibility(View.GONE);
         }
+
+        //显示点赞和评论的数量
+
+        //显示点赞的所有用户
+
+        //显示评论回复的信息
+        RecyclerView recy_discuss = (RecyclerView) holder.getView(R.id.recy_discuss);
+        if(data.getDiscuss().size() > 0){
+            recy_discuss.setVisibility(View.VISIBLE);
+            recy_discuss.setLayoutManager(new LinearLayoutManager(mContext));
+            TrendsDiscussAdapter trendsDiscussAdapter = new TrendsDiscussAdapter(data.getDiscuss(),mContext);
+            recy_discuss.setAdapter(trendsDiscussAdapter);
+        }else{
+            recy_discuss.setVisibility(View.GONE);
+        }
+
     }
 }
