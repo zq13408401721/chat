@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -35,6 +36,7 @@ import com.mychat.interfaces.own.UserConstact;
 import com.mychat.module.bean.DetailsUpdateBean;
 import com.mychat.module.bean.UserDetailsBean;
 import com.mychat.persenters.own.DetailsPersenter;
+import com.mychat.utils.ImgUtils;
 import com.mychat.utils.SpUtils;
 import com.mychat.utils.UserUtils;
 
@@ -88,6 +90,8 @@ public class UserDetailsActivity extends BaseActivity<UserConstact.DetailsPersen
         ((TextView)ageLayout.findViewById(R.id.txt_name)).setText("年龄");
         ((TextView)signLayout.findViewById(R.id.txt_name)).setText("签名");
         ((TextView)levelLayout.findViewById(R.id.txt_name)).setText("等级");
+
+        txtTitle.setText("个人信息");
     }
 
     @Override
@@ -106,7 +110,7 @@ public class UserDetailsActivity extends BaseActivity<UserConstact.DetailsPersen
         userDetailsBean = result;
         //头像刷新
         if(result.getData().getAvater() != null && !TextUtils.isEmpty((CharSequence) result.getData().getAvater())){
-            Glide.with(context).load(result.getData().getAvater()).into(imgHead);
+            ImgUtils.userHeadCircle((String) result.getData().getAvater(),imgHead);
         }
         //显示昵称
         if(result.getData().getNickname() != null && !TextUtils.isEmpty((CharSequence) result.getData().getNickname())){
@@ -196,7 +200,12 @@ public class UserDetailsActivity extends BaseActivity<UserConstact.DetailsPersen
                 break;
             case CODE_HEADCROPACTIVITY:
                 //处理图片剪切页面图片上传结果的地址
+                if(data == null){
+                    Toast.makeText(context,"回传数据为null",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String imgUrl = data.getStringExtra("imgUrl");
+                newAvater = imgUrl;
                 Map<String,String> map = new HashMap<>();
                 map.put("avater",imgUrl);
                 persenter.updateDetails(map);
@@ -220,7 +229,7 @@ public class UserDetailsActivity extends BaseActivity<UserConstact.DetailsPersen
                 //.setCancelable(true)
                 .create();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        TextView txtTitle = view.findViewById(R.id.txt_edit_title);
+        TextView txtEditTitle = view.findViewById(R.id.txt_edit_title);
         EditText editWord = view.findViewById(R.id.edit_word);
         LinearLayout layout_sex = view.findViewById(R.id.layout_sex);
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
@@ -231,7 +240,7 @@ public class UserDetailsActivity extends BaseActivity<UserConstact.DetailsPersen
             layout_sex.setVisibility(View.GONE);
             editWord.setVisibility(View.VISIBLE);
         }
-        txtTitle.setText(title);
+        txtEditTitle.setText(title);
         if(!TextUtils.isEmpty(value)){
             editWord.setHint(value);
         }else{
@@ -299,18 +308,20 @@ public class UserDetailsActivity extends BaseActivity<UserConstact.DetailsPersen
                 curTxt = null;
             }
             if(!TextUtils.isEmpty(newAvater)){
-                Glide.with(context).load(newAvater).listener(new RequestListener<Drawable>() {
+                SpUtils.getInstance().setValue("avater",newAvater);
+                //设置头像为原型图的加载
+                ImgUtils.userHeadCircle(newAvater, imgHead, new RequestListener() {
                     @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    public boolean onResourceReady(Object resource, Object model, Target target, DataSource dataSource, boolean isFirstResource) {
                         newAvater = null;
                         return false;
                     }
-                }).into(imgHead);
+                });
             }
 
         }

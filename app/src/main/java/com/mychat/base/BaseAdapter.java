@@ -63,6 +63,15 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * 把数据添加到尾巴上
+     * @param list
+     */
+    public void addDataFooter(List<T> list){
+        mDatas.addAll(list);
+        notifyDataSetChanged();
+    }
+
 
     /**
      * 分页加载数据的刷新

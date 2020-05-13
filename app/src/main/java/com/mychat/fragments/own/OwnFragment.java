@@ -16,6 +16,7 @@ import com.mychat.activitys.login.SettingActivitiy;
 import com.mychat.activitys.own.UserDetailsActivity;
 import com.mychat.base.BaseFragment;
 import com.mychat.interfaces.IBasePersenter;
+import com.mychat.utils.ImgUtils;
 import com.mychat.utils.SpUtils;
 
 import butterknife.BindView;
@@ -55,6 +56,7 @@ public class OwnFragment extends BaseFragment {
     protected void initView() {
         //判断用户是否登录来处理用户信息的显示
         updateLoginState();
+
     }
 
     @Override
@@ -75,6 +77,9 @@ public class OwnFragment extends BaseFragment {
         if(!TextUtils.isEmpty(username)){
             layoutLogin.setVisibility(View.VISIBLE);
             layoutNoLogin.setVisibility(View.GONE);
+            String avater = SpUtils.getInstance().getString("avater");
+            ImgUtils.userHeadCircle(avater,imgHead);
+
         }else{
             layoutLogin.setVisibility(View.GONE);
             layoutNoLogin.setVisibility(View.VISIBLE);
@@ -139,9 +144,7 @@ public class OwnFragment extends BaseFragment {
         layoutNoLogin.setVisibility(View.GONE);
         //用户头像
         String headUrl = SpUtils.getInstance().getString("avater");
-        if(!TextUtils.isEmpty(headUrl)){
-            Glide.with(context).load(headUrl).into(imgHead);
-        }
+        ImgUtils.userHeadCircle(headUrl,imgHead);
         //昵称
         String nickname = SpUtils.getInstance().getString("username");
         if(!TextUtils.isEmpty(nickname)){

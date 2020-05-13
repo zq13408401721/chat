@@ -43,7 +43,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_marginRight="20dp"
         android:text="+关注"
         android:textSize="18sp"
         android:textColor="#FF5722"

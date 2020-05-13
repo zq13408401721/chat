@@ -16,6 +16,7 @@ import com.mychat.base.BaseActivity;
 import com.mychat.interfaces.IBasePersenter;
 import com.mychat.module.HttpManager;
 import com.mychat.module.apis.UploadApi;
+import com.mychat.utils.ImgUtils;
 import com.mychat.utils.SpUtils;
 
 import org.json.JSONException;
@@ -58,9 +59,7 @@ public class HeadCropActivity extends BaseActivity {
     protected void initData() {
         //获取上一个页面传进来的图片本地路径
         path = getIntent().getStringExtra("img_path");
-        if(!TextUtils.isEmpty(path)){
-            Glide.with(this).load(path).into(imgHead);
-        }
+        ImgUtils.userHeadCircle(path,imgHead);
     }
 
     @Override
@@ -118,7 +117,7 @@ public class HeadCropActivity extends BaseActivity {
                         String imgUrl = jsonObj.getJSONObject("data").getString("url");
                         Intent intent = getIntent();
                         intent.putExtra("imgUrl",imgUrl);
-                        setIntent(intent);
+                        setResult(UserDetailsActivity.CODE_HEADCROPACTIVITY,intent);
                         finish();
                     } catch (IOException e) {
                         e.printStackTrace();
