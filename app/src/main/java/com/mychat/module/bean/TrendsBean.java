@@ -156,7 +156,7 @@ public class TrendsBean {
             private String discussusername;
             private String targetuid;
             private String targetusername;
-            private String conent;
+            private String content;
 
             public String getDiscussuid() {
                 return discussuid;
@@ -190,12 +190,12 @@ public class TrendsBean {
                 this.targetusername = targetusername;
             }
 
-            public String getConent() {
-                return conent;
+            public String getContent() {
+                return content;
             }
 
-            public void setConent(String conent) {
-                this.conent = conent;
+            public void setContent(String conent) {
+                this.content = content;
             }
         }
     }

@@ -3,6 +3,7 @@ package com.mychat.adapters;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,6 +71,17 @@ public class TrendsAdapter extends BaseAdapter {
             recyImgs.setVisibility(View.GONE);
         }
 
+        ConstraintLayout layoutInput = (ConstraintLayout) holder.getView(R.id.layout_input);
+        layoutInput.setVisibility(View.GONE);
+        EditText editText = (EditText) holder.getView(R.id.txt_input);
+        TextView txtSend = (TextView) holder.getView(R.id.txt_send);
+        txtSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //发送回复
+            }
+        });
+
         //显示点赞和评论的数量
 
         //显示点赞的所有用户
@@ -81,6 +93,15 @@ public class TrendsAdapter extends BaseAdapter {
             recy_discuss.setLayoutManager(new LinearLayoutManager(mContext));
             TrendsDiscussAdapter trendsDiscussAdapter = new TrendsDiscussAdapter(data.getDiscuss(),mContext);
             recy_discuss.setAdapter(trendsDiscussAdapter);
+            trendsDiscussAdapter.setOnItemClickHandler(new ItemClickHandler() {
+                @Override
+                public void itemClick(int position, BaseViewHolder holder) {
+                    layoutInput.setVisibility(View.VISIBLE);
+                    String tips = "回复"+data.getDiscuss().get(position).getDiscussusername()+":";
+                    editText.setHint(tips);
+                    layoutInput.setFocusable(true);
+                }
+            });
         }else{
             recy_discuss.setVisibility(View.GONE);
         }

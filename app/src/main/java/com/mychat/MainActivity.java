@@ -10,8 +10,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mychat.anim.gif.AnimatedGifDrawable;
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtSpan1;
     private TextView txtSpan2;
     private TextView txtSpan3;
+    private TextView txtSpan4;
     private TextView txtFace;
     private Button btnTalk;
     private Button btnPop;
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         txtSpan1 = findViewById(R.id.txt_span1);
         txtSpan2 = findViewById(R.id.txt_span2);
         txtSpan3 = findViewById(R.id.txt_span3);
+        txtSpan4 = findViewById(R.id.txt_span4);
         txtFace = findViewById(R.id.txt_face);
         btnPop = findViewById(R.id.btn_pop);
         img = findViewById(R.id.img);
@@ -95,6 +101,33 @@ public class MainActivity extends AppCompatActivity {
 
         Glide.with(this).load(R.mipmap.ic_launcher).into(img);
 
+
+        String str = "小明回复lily:放学一起走！";
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        SpannableString spannableString1 = new SpannableString("小明");
+        ForegroundColorSpan colorSpan1 = new ForegroundColorSpan(Color.BLUE);
+        spannableString1.setSpan(colorSpan1,0,2,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        spannableString1.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                Toast.makeText(MainActivity.this,"小明",Toast.LENGTH_SHORT).show();
+            }
+        },0,2,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        sb.append(spannableString1);
+        sb.append("回复");
+        SpannableString spannableString2 = new SpannableString("lily:");
+        ForegroundColorSpan colorSpan2 = new ForegroundColorSpan(Color.BLUE);
+        spannableString2.setSpan(colorSpan2,0,5,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        spannableString2.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                Toast.makeText(MainActivity.this,"lily",Toast.LENGTH_SHORT).show();
+            }
+        },0,5,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        sb.append(spannableString2);
+        sb.append("放学一起走！");
+        txtSpan4.setText(sb);
+        txtSpan4.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void openPopwindow(){

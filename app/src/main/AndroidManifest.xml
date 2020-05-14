@@ -28,7 +28,8 @@
         <activity
             android:name=".ChatActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
-        <activity android:name=".IndexActivity">
+        <activity android:name=".IndexActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

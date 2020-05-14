@@ -53,13 +53,14 @@ public class TrendsDiscussAdapter extends BaseAdapter {
         //判断当前的数据是评论还是回复
         if(!TextUtils.isEmpty(data.getTargetuid())){
             //当前是回复数据 AA回复BB:XXXX
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            //回复的用户名
-            SpannableString username = new SpannableString(data.getDiscussusername());
-            builder.append(username);
+            String content = data.getDiscussusername()+"回复"+data.getTargetusername()+":"+data.getContent();
+            SpannableString spannableString = new SpannableString(content);
+            //计算富文本中样式和点击范围的开始和结束位置
+            int start=0,end=0;
+            end = data.getDiscussusername().length();
             //设置用户名的颜色
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#3F739C"));
-            builder.setSpan(colorSpan,0,username.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(colorSpan,start,end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             //处理点击回复数据的用户名
             ClickableSpan discussClick = new ClickableSpan() {
                 @Override
@@ -69,19 +70,12 @@ public class TrendsDiscussAdapter extends BaseAdapter {
                     openUserInfoActivity(data.getDiscussuid());
                 }
             };
-            builder.setSpan(discussClick,0,username.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            //设置默认文字颜色
-            int start = username.length();
-            builder.append("回复");
-            ForegroundColorSpan normalSpan = new ForegroundColorSpan(Color.parseColor("#000000"));
-            builder.setSpan(normalSpan,start,builder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            //目标的username
-            SpannableString targetUserName = new SpannableString(data.getTargetusername()+":");
-            start = builder.length();
-            builder.append(targetUserName);
+            spannableString.setSpan(discussClick,start,end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             //设置目标用户的名字颜色
+            start = end+2;
+            end = start+data.getTargetusername().length()+1;
             ForegroundColorSpan targetColorSpan = new ForegroundColorSpan(Color.parseColor("#3F739C"));
-            builder.setSpan(targetColorSpan,start,builder.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(targetColorSpan,start,end,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             //处理被点击数据中的用户名
             ClickableSpan targetClick = new ClickableSpan() {
                 @Override
@@ -90,23 +84,18 @@ public class TrendsDiscussAdapter extends BaseAdapter {
                     openUserInfoActivity(data.getTargetuid());
                 }
             };
-            builder.setSpan(targetClick,start,builder.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            //放入回复的内容
-            if(!TextUtils.isEmpty(data.getConent())){
-                start = builder.length();
-                builder.append(data.getConent());
-                ForegroundColorSpan contentSpan = new ForegroundColorSpan(Color.parseColor("#000000"));
-                builder.setSpan(contentSpan,start,builder.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            }
-            txtContent.setText(builder);
+            //设置点击事件
+            spannableString.setSpan(targetClick,start,end,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            txtContent.setText(spannableString);
         }else{
             //当前是评论数据 AA:XXX
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            SpannableString username = new SpannableString(data.getDiscussusername()+":");
-            builder.append(username);
+            String content = data.getDiscussusername()+":"+data.getContent();
+            SpannableString spannableString = new SpannableString(content);
+            int start=0,end=0;
+            end = data.getDiscussusername().length()+1;
             //设置用户名的颜色
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#3F739C"));
-            builder.setSpan(colorSpan,0,username.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(colorSpan,start,end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             //对当前的用户名添加点击事件
             ClickableSpan clickableSpan = new ClickableSpan() {
                 @Override
@@ -115,16 +104,10 @@ public class TrendsDiscussAdapter extends BaseAdapter {
                     openUserInfoActivity(data.getDiscussuid());
                 }
             };
-            builder.setSpan(clickableSpan,0,username.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-            if(!TextUtils.isEmpty(data.getConent())) {
-                int start = builder.length();
-                //放入回复的内容
-                builder.append(data.getConent());
-                ForegroundColorSpan normalSpan = new ForegroundColorSpan(Color.parseColor("#000000"));
-                builder.setSpan(normalSpan, start, builder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            }
-            txtContent.setText(builder);
+            //设置点击事件
+            spannableString.setSpan(clickableSpan,start,end,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            //把带有样式的字符内容显示到文本框中
+            txtContent.setText(spannableString);
         }
         //设置txtContent文本响应点击事件
         txtContent.setMovementMethod(LinkMovementMethod.getInstance());
