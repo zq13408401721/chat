@@ -24,6 +24,7 @@
         <activity android:name=".activitys.trends.TrendsActivity"/>
         <activity android:name=".activitys.own.UserDetailsActivity"/>
         <activity android:name=".activitys.own.HeadCropActivity"/>
+        <activity android:name=".activitys.own.UserInfoActivity"/>
         <activity
             android:name=".ChatActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
