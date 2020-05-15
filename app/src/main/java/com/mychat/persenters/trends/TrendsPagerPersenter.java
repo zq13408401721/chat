@@ -5,6 +5,7 @@ import com.mychat.common.CommonSubscriber;
 import com.mychat.interfaces.trends.TrendsStract;
 import com.mychat.interfaces.trends.TrendsStract.TrendsListPersenter;
 import com.mychat.module.HttpManager;
+import com.mychat.module.bean.DiscussBean;
 import com.mychat.module.bean.PublishTrendsBean;
 import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
@@ -43,6 +44,23 @@ public class TrendsPagerPersenter extends BasePersenter<TrendsStract.TrendsListV
                     @Override
                     public void onNext(ReplyBean result) {
                         mView.sendReplyReturn(result);
+                    }
+                }));
+    }
+
+    /**
+     * 评论的接口
+     * @param trendsid
+     * @param content
+     */
+    @Override
+    public void sendDiscuss(int trendsid, String content) {
+        addSubscribe(HttpManager.getInstance().getChatApi().sendDiscuss(trendsid,content)
+                .compose(RxUtils.rxScheduler())
+                .subscribeWith(new CommonSubscriber<DiscussBean>(mView) {
+                    @Override
+                    public void onNext(DiscussBean result) {
+                        mView.sendDiscussReturn(result);
                     }
                 }));
     }

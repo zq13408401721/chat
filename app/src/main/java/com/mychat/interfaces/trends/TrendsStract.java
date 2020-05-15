@@ -2,6 +2,7 @@ package com.mychat.interfaces.trends;
 
 import com.mychat.interfaces.IBasePersenter;
 import com.mychat.interfaces.IBaseView;
+import com.mychat.module.bean.DiscussBean;
 import com.mychat.module.bean.PublishTrendsBean;
 import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
@@ -28,6 +29,8 @@ public interface TrendsStract {
         void queryTrendsReturn(TrendsBean trendsBean);
 
         void sendReplyReturn(ReplyBean replyBean);
+
+        void sendDiscussReturn(DiscussBean discussBean);
     }
 
     //动态类别的p层
@@ -43,6 +46,13 @@ public interface TrendsStract {
          * @param content
          */
         void sendReply(int trendsid,int discussid,int targettype,String targetuid,String content);
+
+        /**
+         * 评论
+         * @param trendsid
+         * @param content
+         */
+        void sendDiscuss(int trendsid,String content);
     }
 
 }

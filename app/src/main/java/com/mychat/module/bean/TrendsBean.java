@@ -63,6 +63,16 @@ public class TrendsBean {
         private String avater;
         private List<DiscussBean> discuss;
 
+        public int getDiscussNum() {
+            return discussNum;
+        }
+
+        public void setDiscussNum(int discussNum) {
+            this.discussNum = discussNum;
+        }
+
+        private int discussNum;
+
         public int getId() {
             return id;
         }

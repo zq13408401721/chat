@@ -81,6 +81,16 @@ public class TrendsAdapter extends BaseAdapter {
         }
 
         //显示点赞和评论的数量
+        TextView txtDiscuss = (TextView) holder.getView(R.id.txt_discuss);
+        txtDiscuss.setText(String.valueOf(data.getDiscussNum()));
+        txtDiscuss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClickHandler != null){
+                    itemClickHandler.itemClick(data.getId());
+                }
+            }
+        });
 
         //显示点赞的所有用户
 

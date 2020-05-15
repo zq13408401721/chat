@@ -29,6 +29,7 @@ import com.mychat.base.BaseAdapter;
 import com.mychat.base.BaseFragment;
 import com.mychat.interfaces.IBasePersenter;
 import com.mychat.interfaces.trends.TrendsStract;
+import com.mychat.module.bean.DiscussBean;
 import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
 import com.mychat.persenters.trends.TrendsPagerPersenter;
@@ -88,7 +89,11 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
             //不定参数
             @Override
             public void itemClick(Object[] args) {
-
+                if(args.length > 0) {
+                    curTrendsId = (int) args[0];
+                    //评论
+                    openDiscussWindow(curTrendsId,0,0,null);
+                }
             }
         });
 
@@ -242,6 +247,21 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
         }
     }
 
+    /**
+     * 评论数据返回
+     * @param discussBean
+     */
+    @Override
+    public void sendDiscussReturn(DiscussBean discussBean) {
+        if(dialog != null) dialog.dismiss();
+        dialog = null;
+
+
+
+
+
+    }
+
     /*****************************************评论回复输窗口**********************************/
 
     /**
@@ -269,6 +289,16 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
                     dialog = null;
                 }
             });
+
+            //输入文本框的提示信息显示
+            if(discussid == 0 && targetuid == null){
+                //评论
+                txtInput.setHint("评论");
+            }else{
+                //回复
+                txtInput.setHint("回复xxx:");
+            }
+
             //设置打开软键盘
             SystemUtils.setKeyBroad(activity,true,txtInput);
             //发送的监听
@@ -280,7 +310,11 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
                         return;
                     }
                     //向后退回复接口传递数据
-                    persenter.sendReply(trendsid,discussid,targettype,targetuid,word);
+                    if(discussid == 0 && targetuid == null){
+                        persenter.sendDiscuss(trendsid,word);
+                    }else{
+                        persenter.sendReply(trendsid,discussid,targettype,targetuid,word);
+                    }
                 }
             });
         }
