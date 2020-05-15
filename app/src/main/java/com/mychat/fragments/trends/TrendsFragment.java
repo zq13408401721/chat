@@ -1,11 +1,22 @@
 package com.mychat.fragments.trends;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.TextUtils;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,11 +25,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mychat.R;
 import com.mychat.activitys.trends.TrendsActivity;
 import com.mychat.adapters.TrendsAdapter;
+import com.mychat.base.BaseAdapter;
 import com.mychat.base.BaseFragment;
 import com.mychat.interfaces.IBasePersenter;
 import com.mychat.interfaces.trends.TrendsStract;
+import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
 import com.mychat.persenters.trends.TrendsPagerPersenter;
+import com.mychat.utils.SystemUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -49,6 +63,9 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
     List<TrendsBean.DataBean> list; //动态的集合数据
     TrendsAdapter trendsAdapter; //动态的适配器
 
+    Dialog dialog; //输入窗口
+    int curTrendsId;
+
 
     @Override
     protected int getLayout() {
@@ -62,6 +79,39 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
         trendsAdapter = new TrendsAdapter(list,context);
         recyTrends.setLayoutManager(new LinearLayoutManager(context));
         recyTrends.setAdapter(trendsAdapter);
+        //动态条目的点击监听
+        trendsAdapter.setOnItemClickHandler(new BaseAdapter.ItemClickHandler() {
+            @Override
+            public void itemClick(int position, BaseAdapter.BaseViewHolder holder) {
+                //打开动态的详情页面
+            }
+            //不定参数
+            @Override
+            public void itemClick(Object[] args) {
+
+            }
+        });
+
+        //动态条目中嵌套列表条目的点击事件监听
+        trendsAdapter.setDiscussItemClickHandler(new BaseAdapter.ItemClickHandler() {
+            @Override
+            public void itemClick(int position, BaseAdapter.BaseViewHolder holder) {
+
+            }
+
+            /**
+             * 不定参数
+             * @param args trendsid,discussid,targettype,targetuid
+             */
+            @Override
+            public void itemClick(Object[] args) {
+                //打开动态的评论或者回复的输入框
+                if(args.length >= 4){
+                    openDiscussWindow((int)args[0],(int)args[1],(int)args[2],String.valueOf(args[3]));
+                }
+            }
+        });
+
 
         /**
          * 刷新的监听
@@ -162,4 +212,81 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
             }
         }
     }
+
+    /**
+     * 回复数据返回
+     * @param replyBean
+     */
+    @Override
+    public void sendReplyReturn(ReplyBean replyBean) {
+        if(dialog != null) dialog.dismiss();
+        dialog = null;
+        if(replyBean.getErr() == 200){
+            //回复成功把回复的数据添加到对一个的回复集合
+            TrendsBean.DataBean.DiscussBean discussBean = new TrendsBean.DataBean.DiscussBean();
+            discussBean.setId(replyBean.getData().getReplyid());
+            discussBean.setDiscussuid(replyBean.getData().getReplyuid());
+            discussBean.setDiscussusername(replyBean.getData().getReplyUsername());
+            discussBean.setTargetuid(replyBean.getData().getToReplyUid());
+            discussBean.setTargetusername(replyBean.getData().getToReplyUsername());
+            discussBean.setContent(replyBean.getData().getContent());
+            int i;
+            for(i=0; i<list.size(); i++){
+                if(list.get(i).getId() == curTrendsId){
+                    list.get(i).getDiscuss().add(discussBean);
+                    break;
+                }
+            }
+            //局部刷新列表条目的某条数据
+            trendsAdapter.notifyItemChanged(i);
+        }
+    }
+
+    /*****************************************评论回复输窗口**********************************/
+
+    /**
+     * 打开输入框
+     */
+    private void openDiscussWindow(int trendsid,int discussid,int targettype,String targetuid){
+        if(dialog == null){
+            curTrendsId = trendsid;
+            View view = LayoutInflater.from(context).inflate(R.layout.layout_input_window,null);
+            dialog = new AlertDialog.Builder(context).setView(view).create();
+            EditText txtInput = view.findViewById(R.id.txt_input);
+            TextView txtSend = view.findViewById(R.id.txt_send);
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.show();
+            Window window = dialog.getWindow();
+            window.setGravity(Gravity.BOTTOM);
+            WindowManager m = activity.getWindowManager();
+            Display d = m.getDefaultDisplay(); //为获取屏幕宽、高
+            WindowManager.LayoutParams p = dialog.getWindow().getAttributes(); //获取对话框当前的参数值
+            p.width = d.getWidth(); //宽度设置为屏幕
+            dialog.getWindow().setAttributes(p); //设置生效
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    dialog = null;
+                }
+            });
+            //设置打开软键盘
+            SystemUtils.setKeyBroad(activity,true,txtInput);
+            //发送的监听
+            txtSend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String word = txtInput.getText().toString();
+                    if(TextUtils.isEmpty(word)){
+                        return;
+                    }
+                    //向后退回复接口传递数据
+                    persenter.sendReply(trendsid,discussid,targettype,targetuid,word);
+                }
+            });
+        }
+
+    }
+
+
+
 }

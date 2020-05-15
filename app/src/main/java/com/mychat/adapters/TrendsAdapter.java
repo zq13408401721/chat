@@ -33,6 +33,15 @@ public class TrendsAdapter extends BaseAdapter {
         return R.layout.layout_trends_item;
     }
 
+
+    /**
+     * 设置嵌套适配器
+     * @param itemClickHandler
+     */
+    public void setDiscussItemClickHandler(ItemClickHandler itemClickHandler){
+        this.itemClickHandler = itemClickHandler;
+    }
+
     @Override
     public void bindData(BaseViewHolder holder, Object o) {
         //当前的动态数据
@@ -61,26 +70,15 @@ public class TrendsAdapter extends BaseAdapter {
         //图片内容
         RecyclerView recyImgs = (RecyclerView) holder.getView(R.id.recy_imgs);
         if(!TextUtils.isEmpty(data.getResources())){
-            recyImgs.setVisibility(View.VISIBLE);
-            String[] imgs = data.getResources().split("$");
-            List<String> list = Arrays.asList(imgs);
-            recyImgs.setLayoutManager(new GridLayoutManager(mContext,3));
-            TrendsImgAdapter trendsImgAdapter = new TrendsImgAdapter(list,mContext);
-            recyImgs.setAdapter(trendsImgAdapter);
+                recyImgs.setVisibility(View.VISIBLE);
+                String[] imgs = data.getResources().split("$");
+                List<String> list = Arrays.asList(imgs);
+                recyImgs.setLayoutManager(new GridLayoutManager(mContext,3));
+                TrendsImgAdapter trendsImgAdapter = new TrendsImgAdapter(list,mContext);
+                recyImgs.setAdapter(trendsImgAdapter);
         }else{
             recyImgs.setVisibility(View.GONE);
         }
-
-        ConstraintLayout layoutInput = (ConstraintLayout) holder.getView(R.id.layout_input);
-        layoutInput.setVisibility(View.GONE);
-        EditText editText = (EditText) holder.getView(R.id.txt_input);
-        TextView txtSend = (TextView) holder.getView(R.id.txt_send);
-        txtSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //发送回复
-            }
-        });
 
         //显示点赞和评论的数量
 
@@ -92,16 +90,10 @@ public class TrendsAdapter extends BaseAdapter {
             recy_discuss.setVisibility(View.VISIBLE);
             recy_discuss.setLayoutManager(new LinearLayoutManager(mContext));
             TrendsDiscussAdapter trendsDiscussAdapter = new TrendsDiscussAdapter(data.getDiscuss(),mContext);
+            trendsDiscussAdapter.trendsid = data.getId(); //当前动态的id给评论回复的适配
             recy_discuss.setAdapter(trendsDiscussAdapter);
-            trendsDiscussAdapter.setOnItemClickHandler(new ItemClickHandler() {
-                @Override
-                public void itemClick(int position, BaseViewHolder holder) {
-                    layoutInput.setVisibility(View.VISIBLE);
-                    String tips = "回复"+data.getDiscuss().get(position).getDiscussusername()+":";
-                    editText.setHint(tips);
-                    layoutInput.setFocusable(true);
-                }
-            });
+            //把外层实现的点击接口传入嵌套适配器
+            trendsDiscussAdapter.setOnItemClickHandler(itemClickHandler);
         }else{
             recy_discuss.setVisibility(View.GONE);
         }

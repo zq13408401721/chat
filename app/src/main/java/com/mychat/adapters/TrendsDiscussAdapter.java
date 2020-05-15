@@ -28,6 +28,8 @@ import java.util.List;
 
 public class TrendsDiscussAdapter extends BaseAdapter {
 
+    public int trendsid;
+
     public TrendsDiscussAdapter(List<TrendsBean.DataBean.DiscussBean> list, Context context){
         super(list,context);
     }
@@ -111,6 +113,17 @@ public class TrendsDiscussAdapter extends BaseAdapter {
         }
         //设置txtContent文本响应点击事件
         txtContent.setMovementMethod(LinkMovementMethod.getInstance());
+
+        //处理回复评论的条目点击
+        txtContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClickHandler != null){
+                    // trendsid,discussid,targettype,targetuid
+                    itemClickHandler.itemClick(trendsid,data.getId(),2,data.getDiscussuid());
+                }
+            }
+        });
     }
 
     /**

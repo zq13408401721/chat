@@ -126,8 +126,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
     /**
      * 定义回调接口
      */
-    public interface ItemClickHandler{
+    public interface ItemClickHandler<T>{
         void itemClick(int position, BaseViewHolder holder);
+
+        //不定参数
+        void itemClick(T...args);
     }
 
 }

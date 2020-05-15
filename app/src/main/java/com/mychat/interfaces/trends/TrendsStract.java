@@ -3,6 +3,7 @@ package com.mychat.interfaces.trends;
 import com.mychat.interfaces.IBasePersenter;
 import com.mychat.interfaces.IBaseView;
 import com.mychat.module.bean.PublishTrendsBean;
+import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
 
 /**
@@ -25,11 +26,23 @@ public interface TrendsStract {
     //动态列表的view层
     interface TrendsListView extends IBaseView{
         void queryTrendsReturn(TrendsBean trendsBean);
+
+        void sendReplyReturn(ReplyBean replyBean);
     }
 
     //动态类别的p层
     interface TrendsListPersenter extends IBasePersenter<TrendsListView>{
         void queryTrends(int page,int size,int trendsid);
+
+        /**
+         * 回复数据的接口
+         * @param trendsid
+         * @param discussid
+         * @param targettype
+         * @param targetuid
+         * @param content
+         */
+        void sendReply(int trendsid,int discussid,int targettype,String targetuid,String content);
     }
 
 }

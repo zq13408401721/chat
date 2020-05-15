@@ -2,6 +2,7 @@ package com.mychat.module.apis;
 
 import com.mychat.module.bean.DetailsUpdateBean;
 import com.mychat.module.bean.PublishTrendsBean;
+import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
 import com.mychat.module.bean.UserDetailsBean;
 import com.mychat.module.bean.UserInfoBean;
@@ -56,5 +57,13 @@ public interface ChatApi {
     @POST("trends/sendTrends")
     @FormUrlEncoded
     Flowable<PublishTrendsBean> sendTrends(@Field("content") String content,@Field("resources") String resources);
+
+
+    /**
+     * 回复接口
+     */
+    @POST("discuss/replyCommit")
+    @FormUrlEncoded
+    Flowable<ReplyBean> sendReply(@Field("trendsid") int trendsid,@Field("discussid") int discussid,@Field("targettype") int type,@Field("targetuid") String targetuid,@Field("content") String content);
 
 }
