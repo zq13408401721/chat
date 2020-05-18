@@ -34,6 +34,7 @@ import com.mychat.module.bean.PraiseBean;
 import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
 import com.mychat.persenters.trends.TrendsPagerPersenter;
+import com.mychat.utils.SpUtils;
 import com.mychat.utils.SystemUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -347,7 +348,35 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
      */
     @Override
     public void sendPraiseReturn(PraiseBean praiseBean) {
-
+        List<TrendsBean.DataBean.PraiseBean> praiseList=null;
+        for(TrendsBean.DataBean item:list){
+            if(item.getId() == praiseBean.getData().getTrendsid()){
+                praiseList = item.getPraise();
+            }
+        }
+        String username = SpUtils.getInstance().getString("username");
+        //40003表示取消点赞成功
+        if(praiseBean.getErr() == 40003){
+            //成功取消点赞
+            if(praiseList != null){
+                for(TrendsBean.DataBean.PraiseBean item:praiseList){
+                    if(item.getUsername().equals(username)){
+                        praiseList.remove(item); //删除取消点赞的用户数据
+                        break;
+                    }
+                }
+                trendsAdapter.notifyDataSetChanged();
+            }
+        }else if(praiseBean.getErr() == 200){
+            if(praiseList != null) {
+                //成添加点赞
+                TrendsBean.DataBean.PraiseBean userinfo = new TrendsBean.DataBean.PraiseBean();
+                userinfo.setUid(praiseBean.getData().getUid());
+                userinfo.setUsername(praiseBean.getData().getUsername());
+                praiseList.add(userinfo);
+                trendsAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     /**

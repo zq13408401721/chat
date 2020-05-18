@@ -2,6 +2,7 @@ package com.mychat.module.apis;
 
 import com.mychat.module.bean.DetailsUpdateBean;
 import com.mychat.module.bean.DiscussBean;
+import com.mychat.module.bean.PraiseBean;
 import com.mychat.module.bean.PublishTrendsBean;
 import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
@@ -70,5 +71,17 @@ public interface ChatApi {
     @POST("discuss/discussCommit")
     @FormUrlEncoded
     Flowable<DiscussBean> sendDiscuss(@Field("trendsid") int trendsid,@Field("content") String content);
+
+    /**
+     * 点赞取消点赞
+     * @param trendsid
+     * @param type
+     * @return
+     */
+    @POST("praise/addPraise")
+    @FormUrlEncoded
+    Flowable<PraiseBean> sendPraise(@Field("trendsid") int trendsid, @Field("type") int type);
+
+
 
 }

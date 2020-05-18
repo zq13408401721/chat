@@ -6,6 +6,7 @@ import com.mychat.interfaces.trends.TrendsStract;
 import com.mychat.interfaces.trends.TrendsStract.TrendsListPersenter;
 import com.mychat.module.HttpManager;
 import com.mychat.module.bean.DiscussBean;
+import com.mychat.module.bean.PraiseBean;
 import com.mychat.module.bean.PublishTrendsBean;
 import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
@@ -65,4 +66,20 @@ public class TrendsPagerPersenter extends BasePersenter<TrendsStract.TrendsListV
                 }));
     }
 
+    /**
+     * 点赞的接口
+     * @param trendsid
+     * @param type 0 点赞 1取消点赞
+     */
+    @Override
+    public void sendPraise(int trendsid, int type) {
+        addSubscribe(HttpManager.getInstance().getChatApi().sendPraise(trendsid,type)
+                .compose(RxUtils.rxScheduler())
+                .subscribeWith(new CommonSubscriber<PraiseBean>(mView) {
+                    @Override
+                    public void onNext(PraiseBean result) {
+                        mView.sendPraiseReturn(result);
+                    }
+                }));
+    }
 }

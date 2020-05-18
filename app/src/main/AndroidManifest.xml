@@ -41,8 +41,8 @@
             android:name=".services.ChatService"
             android:process="chatserver" />-->
 
-        <!-- Required SDK 核心功能-->
-        <!-- 可配置 android:process 参数将 PushService 放在其他进程中 -->
+        <!--&lt;!&ndash; Required SDK 核心功能&ndash;&gt;
+        &lt;!&ndash; 可配置 android:process 参数将 PushService 放在其他进程中 &ndash;&gt;
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
@@ -56,15 +56,15 @@
         </service>
 
 
-        <!-- since 3.0.9 Required SDK 核心功能-->
+        &lt;!&ndash; since 3.0.9 Required SDK 核心功能&ndash;&gt;
         <provider
             android:authorities="您应用的包名.DataProvider"
             android:name="cn.jpush.android.service.DataProvider"
             android:exported="true"
             />
 
-        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的 JPush 服务相互拉起的功能。 -->
-        <!-- 若不启用该功能可删除该组件，或把 enabled 设置成 false ；App 不会被其他 App 拉起，但会拉起其他的 App。 -->
+        &lt;!&ndash; since 1.8.0 option 可选项。用于同一设备中不同应用的 JPush 服务相互拉起的功能。 &ndash;&gt;
+        &lt;!&ndash; 若不启用该功能可删除该组件，或把 enabled 设置成 false ；App 不会被其他 App 拉起，但会拉起其他的 App。 &ndash;&gt;
         <service
             android:name="cn.jpush.android.service.DaemonService"
             android:enabled="true"
@@ -75,14 +75,14 @@
             </intent-filter>
         </service>
 
-        <!-- since 3.1.0 Required SDK 核心功能-->
+        &lt;!&ndash; since 3.1.0 Required SDK 核心功能&ndash;&gt;
         <provider
             android:authorities="您应用的包名.DownloadProvider"
             android:name="cn.jpush.android.service.DownloadProvider"
             android:exported="true"
             />
 
-        <!-- Required SDK 核心功能-->
+        &lt;!&ndash; Required SDK 核心功能&ndash;&gt;
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true" >
@@ -94,7 +94,7 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
-            <!-- Optional -->
+            &lt;!&ndash; Optional &ndash;&gt;
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
@@ -102,8 +102,8 @@
             </intent-filter>
         </receiver>
 
-        <!-- Required SDK 核心功能-->
-        <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 设置成 true。 -->
+        &lt;!&ndash; Required SDK 核心功能&ndash;&gt;
+        &lt;!&ndash; 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 设置成 true。 &ndash;&gt;
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -115,8 +115,8 @@
                 <category android:name="com.mychat" />
             </intent-filter>
         </activity>
-        <!-- SDK 核心功能-->
-        <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 设置成 true。 -->
+        &lt;!&ndash; SDK 核心功能&ndash;&gt;
+        &lt;!&ndash; 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 设置成 true。 &ndash;&gt;
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -128,7 +128,7 @@
             </intent-filter>
         </activity>
 
-        <!-- since 3.6.0 -->
+        &lt;!&ndash; since 3.6.0 &ndash;&gt;
         <activity android:name="cn.jpush.android.service.DActivity"
             android:enabled="true"
             android:exported="true"
@@ -140,25 +140,25 @@
             </intent-filter>
         </activity>
 
-        <!-- Since JCore2.0.0 Required SDK核心功能-->
-        <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
-        <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
-        <!--<service android:name="pu"
+        &lt;!&ndash; Since JCore2.0.0 Required SDK核心功能&ndash;&gt;
+        &lt;!&ndash; 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false &ndash;&gt;
+        &lt;!&ndash; 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 &ndash;&gt;
+        &lt;!&ndash;<service android:name="pu"
             android:enabled="true"
             android:exported="false"
             android:process=":pushcore">
             <intent-filter>
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
-        </service>-->
+        </service>&ndash;&gt;
 
-        <!-- Required SDK 核心功能-->
+        &lt;!&ndash; Required SDK 核心功能&ndash;&gt;
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
 
-        <!-- Required since 3.0.7 -->
-        <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
-        <!-- 3.3.0开始所有事件将通过该类回调 -->
-        <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
+        &lt;!&ndash; Required since 3.0.7 &ndash;&gt;
+        &lt;!&ndash; 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 &ndash;&gt;
+        &lt;!&ndash; 3.3.0开始所有事件将通过该类回调 &ndash;&gt;
+        &lt;!&ndash; 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter &ndash;&gt;
         <receiver
             android:name=".services.PushMessageReceiver"
             android:enabled="true"
@@ -169,41 +169,41 @@
             </intent-filter>
         </receiver>
 
-        <!-- User defined. 用户自定义的广播接收器-->
-        <!-- 这是3.3.0之前版本的接收方式，3.3.0开始是通过继承 JPushMessageReceiver并配置来接收所有事件回调。-->
-        <!-- 如果仍然需要在这个Receiver里接收，需要在JPushMessageReceiver 的子类里不重写对应的回调方法，或者重写方法且调用super-->
+        &lt;!&ndash; User defined. 用户自定义的广播接收器&ndash;&gt;
+        &lt;!&ndash; 这是3.3.0之前版本的接收方式，3.3.0开始是通过继承 JPushMessageReceiver并配置来接收所有事件回调。&ndash;&gt;
+        &lt;!&ndash; 如果仍然需要在这个Receiver里接收，需要在JPushMessageReceiver 的子类里不重写对应的回调方法，或者重写方法且调用super&ndash;&gt;
         <receiver
             android:name=".services.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <!--Required 用户注册 SDK 的 intent-->
+                &lt;!&ndash;Required 用户注册 SDK 的 intent&ndash;&gt;
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
-                <!--Required 用户接收 SDK 消息的 intent-->
+                &lt;!&ndash;Required 用户接收 SDK 消息的 intent&ndash;&gt;
                 <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
-                <!--Required 用户接收 SDK 通知栏信息的 intent-->
+                &lt;!&ndash;Required 用户接收 SDK 通知栏信息的 intent&ndash;&gt;
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
-                <!--Required 用户打开自定义通知栏的 intent-->
+                &lt;!&ndash;Required 用户打开自定义通知栏的 intent&ndash;&gt;
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
-                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                &lt;!&ndash; 接收网络变化 连接/断开 since 1.6.3 &ndash;&gt;
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
                 <category android:name="com.mychat" />
             </intent-filter>
         </receiver>
 
-        <!-- User defined. 用户自定义 Receiver 接收被拉起回调-->
-        <!-- 自定义 Receiver 组件，继承cn.jpush.android.service.WakedResultReceiver类,复写onWake(int wakeType)或 onWake(Context context, int wakeType)方法以监听被拉起 -->
-        <!--<receiver android:name="xx.xx.xx.MyWakedResultReceiver">
+        &lt;!&ndash; User defined. 用户自定义 Receiver 接收被拉起回调&ndash;&gt;
+        &lt;!&ndash; 自定义 Receiver 组件，继承cn.jpush.android.service.WakedResultReceiver类,复写onWake(int wakeType)或 onWake(Context context, int wakeType)方法以监听被拉起 &ndash;&gt;
+        &lt;!&ndash;<receiver android:name="xx.xx.xx.MyWakedResultReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.WakedReceiver" />
                 <category android:name="${applicationId}" />
             </intent-filter>
-        </receiver>-->
+        </receiver>&ndash;&gt;
 
-        <!-- 3.5.0新增，用于定时展示功能 -->
+        &lt;!&ndash; 3.5.0新增，用于定时展示功能 &ndash;&gt;
         <receiver android:name="cn.jpush.android.service.SchedulerReceiver" android:exported="false"/>
 
-        <!--Required SDK核心功能 since 3.3.0-->
+        &lt;!&ndash;Required SDK核心功能 since 3.3.0&ndash;&gt;
         <activity
             android:name="cn.jpush.android.service.JNotifyActivity"
             android:exported="true"
@@ -215,14 +215,14 @@
             </intent-filter>
         </activity>
 
-        <!-- Required. For publish channel feature -->
-        <!-- JPUSH_CHANNEL 是为了方便开发者统计 APK 分发渠道。-->
-        <!-- 例如: -->
-        <!-- 发到 Google Play 的 APK 可以设置为 google-play; -->
-        <!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
+        &lt;!&ndash; Required. For publish channel feature &ndash;&gt;
+        &lt;!&ndash; JPUSH_CHANNEL 是为了方便开发者统计 APK 分发渠道。&ndash;&gt;
+        &lt;!&ndash; 例如: &ndash;&gt;
+        &lt;!&ndash; 发到 Google Play 的 APK 可以设置为 google-play; &ndash;&gt;
+        &lt;!&ndash; 发到其他市场的 APK 可以设置为 xxx-market。 &ndash;&gt;
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
-        <!-- Required. AppKey copied from Portal -->
-        <meta-data android:name="JPUSH_APPKEY" android:value="bbee94e0ae85fdf9ccedecd4"/>
+        &lt;!&ndash; Required. AppKey copied from Portal &ndash;&gt;
+        <meta-data android:name="JPUSH_APPKEY" android:value="bbee94e0ae85fdf9ccedecd4"/>-->
 
     </application>
 

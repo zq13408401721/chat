@@ -12,17 +12,6 @@ public class PraiseBean {
     private int err;
     private String errmsg;
     private DataBean data;
-    private ObjBean obj;
-
-    public int getTrendsid() {
-        return trendsid;
-    }
-
-    public void setTrendsid(int trendsid) {
-        this.trendsid = trendsid;
-    }
-
-    private int trendsid;
 
     public int getErr() {
         return err;
@@ -48,18 +37,7 @@ public class PraiseBean {
         this.data = data;
     }
 
-    public ObjBean getObj() {
-        return obj;
-    }
-
-    public void setObj(ObjBean obj) {
-        this.obj = obj;
-    }
-
     public static class DataBean {
-    }
-
-    public static class ObjBean {
         /**
          * uid : d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc
          * username : yun6
@@ -67,6 +45,7 @@ public class PraiseBean {
 
         private String uid;
         private String username;
+        private int trendsid;
 
         public String getUid() {
             return uid;
@@ -82,6 +61,14 @@ public class PraiseBean {
 
         public void setUsername(String username) {
             this.username = username;
+        }
+
+        public int getTrendsid() {
+            return trendsid;
+        }
+
+        public void setTrendsid(int trendsid) {
+            this.trendsid = trendsid;
         }
     }
 }

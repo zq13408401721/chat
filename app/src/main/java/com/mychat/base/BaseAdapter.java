@@ -1,6 +1,8 @@
 package com.mychat.base;
 
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mychat.activitys.login.LoginActivity;
 import com.mychat.fragments.trends.TrendsFragment;
+import com.mychat.utils.SpUtils;
 
 import java.util.List;
 
@@ -133,6 +137,21 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
 
         //不定参数 type表示业务类型
         void itemClick(int type,T...args);
+    }
+
+    /**
+     * 判断用户是否登录
+     */
+    protected boolean checkUserLogin(){
+        String username = SpUtils.getInstance().getString("username");
+        if(!TextUtils.isEmpty(username)){
+            return true;
+        }else {
+            //如果没有登录，直接调整到登录页面
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            mContext.startActivity(intent);
+        }
+        return false;
     }
 
 }

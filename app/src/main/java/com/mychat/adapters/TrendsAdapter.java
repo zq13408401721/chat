@@ -26,6 +26,7 @@ import com.mychat.R;
 import com.mychat.base.BaseAdapter;
 import com.mychat.fragments.trends.TrendsFragment;
 import com.mychat.module.bean.TrendsBean;
+import com.mychat.utils.SpUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -106,8 +107,19 @@ public class TrendsAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if(itemClickHandler != null){
-                    //点赞
-                    itemClickHandler.itemClick(TrendsFragment.TYPE_PRAISE,data.getId(),0);
+                    int type = 0; //是否是点赞
+                    //判断是否已经登录
+                    if(checkUserLogin()){
+                        String username = SpUtils.getInstance().getString("username");
+                        for(TrendsBean.DataBean.PraiseBean item:data.getPraise()){
+                            if(item.getUsername().equals(username)){
+                                type = 1;
+                                break;
+                            }
+                        }
+                        //点赞
+                        itemClickHandler.itemClick(TrendsFragment.TYPE_PRAISE,data.getId(),type);
+                    }
                 }
             }
         });
