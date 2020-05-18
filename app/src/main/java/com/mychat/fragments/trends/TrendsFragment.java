@@ -30,6 +30,7 @@ import com.mychat.base.BaseFragment;
 import com.mychat.interfaces.IBasePersenter;
 import com.mychat.interfaces.trends.TrendsStract;
 import com.mychat.module.bean.DiscussBean;
+import com.mychat.module.bean.PraiseBean;
 import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
 import com.mychat.persenters.trends.TrendsPagerPersenter;
@@ -48,6 +49,13 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersenter> implements TrendsStract.TrendsListView {
+
+    public static final int TYPE_DISCUSS = 100; //评论
+    public static final int TYPE_REPLY = 200; //评论
+    public static final int TYPE_PRAISE = 300; //点赞
+
+
+
     @BindView(R.id.img_trends)
     ImageView imgTrends;
 
@@ -85,15 +93,24 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
             @Override
             public void itemClick(int position, BaseAdapter.BaseViewHolder holder) {
                 //打开动态的详情页面
+
+
             }
             //不定参数
             @Override
-            public void itemClick(Object[] args) {
-                if(args.length > 0) {
-                    curTrendsId = (int) args[0];
-                    //评论
-                    openDiscussWindow(curTrendsId,0,0,null);
+            public void itemClick(int type,Object[] args) {
+                if(type == TYPE_DISCUSS){
+                    if(args.length > 0) {
+                        curTrendsId = (int) args[0];
+                        //评论
+                        openDiscussWindow(curTrendsId,0,0,null);
+                    }
+                }else if(type == TYPE_PRAISE){
+                    if(args.length >= 2){
+                        sendPraise((int)args[0],(int)args[1]);
+                    }
                 }
+
             }
         });
 
@@ -109,7 +126,7 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
              * @param args trendsid,discussid,targettype,targetuid
              */
             @Override
-            public void itemClick(Object[] args) {
+            public void itemClick(int type,Object[] args) {
                 //打开动态的评论或者回复的输入框
                 if(args.length >= 4){
                     openDiscussWindow((int)args[0],(int)args[1],(int)args[2],String.valueOf(args[3]));
@@ -321,6 +338,28 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
 
     }
 
+
+    /****************************点赞操作**************************/
+
+    /**
+     * 点赞返回
+     * @param praiseBean
+     */
+    @Override
+    public void sendPraiseReturn(PraiseBean praiseBean) {
+
+    }
+
+    /**
+     * 发送点赞或取消点赞
+     * @param trendsid
+     * @param type  0 点赞 1取消点赞
+     */
+    private void sendPraise(int trendsid,int type){
+        if(trendsid > 0){
+            persenter.sendPraise(trendsid,type);
+        }
+    }
 
 
 }

@@ -9,6 +9,8 @@ import android.widget.Toast;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class MyApp extends Application {
 
     public static MyApp myApp;
@@ -18,6 +20,9 @@ public class MyApp extends Application {
         super.onCreate();
         myApp = this;
         //initUM();
+
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     private void initUM(){

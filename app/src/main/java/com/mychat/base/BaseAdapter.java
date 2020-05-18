@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mychat.fragments.trends.TrendsFragment;
+
 import java.util.List;
 
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
@@ -129,8 +131,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
     public interface ItemClickHandler<T>{
         void itemClick(int position, BaseViewHolder holder);
 
-        //不定参数
-        void itemClick(T...args);
+        //不定参数 type表示业务类型
+        void itemClick(int type,T...args);
     }
 
 }

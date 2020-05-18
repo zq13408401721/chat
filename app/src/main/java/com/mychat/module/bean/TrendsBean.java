@@ -7,7 +7,7 @@ public class TrendsBean {
     /**
      * err : 200
      * errmsg :
-     * data : [{"id":2,"uid":"0621f985-0f2b-4fc5-93a0-e8ff9e6f0f68","address":"上海","mobile":"iphoneX","time":0,"content":"优衣库","resources":"","username":"yun7","avater":"http://t8.baidu.com/it/u=1484500186,1503043093&fm=79&app=86&size=h300&n=0&g=4n&f=jpeg?sec=1589201615&t=4abf9992c4d95bad33c05eaf370b257e","discuss":[{"discussuid":"27b6391f-bd12-4a15-91ef-f3a0bc6b5277","discussusername":"lizhijun321321","targetuid":"","targetusername":"","conent":"服务遗留"}]},{"id":1,"uid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","address":"北京","mobile":"华为p30","time":0,"content":"名创优品","resources":"","username":"yun6","avater":"http://yun918.cn/study/public/uploadfiles/yun6/Screenshot_2020-03-04-12-58-43.png","discuss":[{"discussuid":"470d3885-2dd4-4541-b99e-be640dfe4b71","discussusername":"xiaohuya","targetuid":"","targetusername":"","conent":"666"},{"discussuid":"0ed9000d-fcd0-4fc6-9eed-c46d00585056","discussusername":"xueling","targetuid":"470d3885-2dd4-4541-b99e-be640dfe4b71","targetusername":"xiaohuya","conent":"价格便宜"},{"discussuid":"62638f07-8d91-447d-98bf-a3c37f31a3d1","discussusername":"zhangqiankun","targetuid":"","targetusername":"","conent":"质量不错"}]}]
+     * data : [{"id":94,"uid":"cec60303-5fb4-4fc2-bf29-1eee2ae91c31","address":null,"mobile":null,"time":2147483647,"content":"你好啊","resources":"","username":"weiwenhui","avater":"http://yun918.cn/study/public/uploadfiles/weiwenhui/mmexport1572608332601.jpg","discussNum":1,"praise":[{"uid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","username":"yun6"},{"uid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","username":"yun6"},{"uid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","username":"yun6"}],"discuss":[{"content":"呵呵","id":12,"discussuid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","discussusername":"yun6","targetuid":"","targetusername":""}]},{"id":93,"uid":"cec60303-5fb4-4fc2-bf29-1eee2ae91c31","address":null,"mobile":null,"time":2147483647,"content":"","resources":"http://yun918.cn/study/public/uploadfiles/weiwenhui/mmexport1577273780925.jpg","username":"weiwenhui","avater":"http://yun918.cn/study/public/uploadfiles/weiwenhui/mmexport1572608332601.jpg","discussNum":0,"praise":[],"discuss":[]},{"id":92,"uid":"6406ec6e-03d4-4829-bbff-ec7fb9146fd5","address":null,"mobile":null,"time":2147483647,"content":"今晚吃的撑了","resources":"http://yun918.cn/study/public/uploadfiles/nihao/12dab37f8831e9b499976be52b32ede8.jpeg","username":"yanglutong","avater":null,"discussNum":0,"praise":[],"discuss":[]},{"id":91,"uid":"df2ec41d-65a9-46e1-a4c9-ceda6cb8720b","address":null,"mobile":null,"time":2147483647,"content":"嗯","resources":"","username":"zhangdenghui","avater":null,"discussNum":0,"praise":[],"discuss":[]},{"id":90,"uid":"df2ec41d-65a9-46e1-a4c9-ceda6cb8720b","address":null,"mobile":null,"time":2147483647,"content":"嗯","resources":"","username":"zhangdenghui","avater":null,"discussNum":0,"praise":[],"discuss":[]},{"id":89,"uid":"df2ec41d-65a9-46e1-a4c9-ceda6cb8720b","address":null,"mobile":null,"time":2147483647,"content":"天不刮风","resources":"","username":"zhangdenghui","avater":null,"discussNum":0,"praise":[],"discuss":[]},{"id":88,"uid":"df2ec41d-65a9-46e1-a4c9-ceda6cb8720b","address":null,"mobile":null,"time":2147483647,"content":"天不刮风","resources":"","username":"zhangdenghui","avater":null,"discussNum":0,"praise":[],"discuss":[]},{"id":87,"uid":"6406ec6e-03d4-4829-bbff-ec7fb9146fd5","address":null,"mobile":null,"time":2147483647,"content":"今天好","resources":"http://yun918.cn/study/public/uploadfiles/nihao/ding.jpg","username":"yanglutong","avater":null,"discussNum":0,"praise":[],"discuss":[]},{"id":86,"uid":"c14bf104-eb53-4d1d-b00e-1dd5a3c98336","address":null,"mobile":null,"time":2147483647,"content":"","resources":"http://yun918.cn/study/public/uploadfiles/chen/wx_camera_1587167729832.jpg","username":"chen","avater":null,"discussNum":0,"praise":[],"discuss":[]},{"id":85,"uid":"c14bf104-eb53-4d1d-b00e-1dd5a3c98336","address":null,"mobile":null,"time":2147483647,"content":"","resources":"http://yun918.cn/study/public/uploadfiles/chen/wx_camera_1587167729832.jpg","username":"chen","avater":null,"discussNum":0,"praise":[],"discuss":[]}]
      */
 
     private int err;
@@ -40,38 +40,32 @@ public class TrendsBean {
 
     public static class DataBean {
         /**
-         * id : 2
-         * uid : 0621f985-0f2b-4fc5-93a0-e8ff9e6f0f68
-         * address : 上海
-         * mobile : iphoneX
-         * time : 0
-         * content : 优衣库
+         * id : 94
+         * uid : cec60303-5fb4-4fc2-bf29-1eee2ae91c31
+         * address : null
+         * mobile : null
+         * time : 2147483647
+         * content : 你好啊
          * resources :
-         * username : yun7
-         * avater : http://t8.baidu.com/it/u=1484500186,1503043093&fm=79&app=86&size=h300&n=0&g=4n&f=jpeg?sec=1589201615&t=4abf9992c4d95bad33c05eaf370b257e
-         * discuss : [{"discussuid":"27b6391f-bd12-4a15-91ef-f3a0bc6b5277","discussusername":"lizhijun321321","targetuid":"","targetusername":"","conent":"服务遗留"}]
+         * username : weiwenhui
+         * avater : http://yun918.cn/study/public/uploadfiles/weiwenhui/mmexport1572608332601.jpg
+         * discussNum : 1
+         * praise : [{"uid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","username":"yun6"},{"uid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","username":"yun6"},{"uid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","username":"yun6"}]
+         * discuss : [{"content":"呵呵","id":12,"discussuid":"d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc","discussusername":"yun6","targetuid":"","targetusername":""}]
          */
 
         private int id;
         private String uid;
-        private String address;
-        private String mobile;
+        private Object address;
+        private Object mobile;
         private int time;
         private String content;
         private String resources;
         private String username;
         private String avater;
-        private List<DiscussBean> discuss;
-
-        public int getDiscussNum() {
-            return discussNum;
-        }
-
-        public void setDiscussNum(int discussNum) {
-            this.discussNum = discussNum;
-        }
-
         private int discussNum;
+        private List<PraiseBean> praise;
+        private List<DiscussBean> discuss;
 
         public int getId() {
             return id;
@@ -89,19 +83,19 @@ public class TrendsBean {
             this.uid = uid;
         }
 
-        public String getAddress() {
+        public Object getAddress() {
             return address;
         }
 
-        public void setAddress(String address) {
+        public void setAddress(Object address) {
             this.address = address;
         }
 
-        public String getMobile() {
+        public Object getMobile() {
             return mobile;
         }
 
-        public void setMobile(String mobile) {
+        public void setMobile(Object mobile) {
             this.mobile = mobile;
         }
 
@@ -145,6 +139,22 @@ public class TrendsBean {
             this.avater = avater;
         }
 
+        public int getDiscussNum() {
+            return discussNum;
+        }
+
+        public void setDiscussNum(int discussNum) {
+            this.discussNum = discussNum;
+        }
+
+        public List<PraiseBean> getPraise() {
+            return praise;
+        }
+
+        public void setPraise(List<PraiseBean> praise) {
+            this.praise = praise;
+        }
+
         public List<DiscussBean> getDiscuss() {
             return discuss;
         }
@@ -153,20 +163,56 @@ public class TrendsBean {
             this.discuss = discuss;
         }
 
-        public static class DiscussBean {
+        public static class PraiseBean {
             /**
-             * discussuid : 27b6391f-bd12-4a15-91ef-f3a0bc6b5277
-             * discussusername : lizhijun321321
-             * targetuid :
-             * targetusername :
-             * conent : 服务遗留
+             * uid : d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc
+             * username : yun6
              */
 
+            private String uid;
+            private String username;
+
+            public String getUid() {
+                return uid;
+            }
+
+            public void setUid(String uid) {
+                this.uid = uid;
+            }
+
+            public String getUsername() {
+                return username;
+            }
+
+            public void setUsername(String username) {
+                this.username = username;
+            }
+        }
+
+        public static class DiscussBean {
+            /**
+             * content : 呵呵
+             * id : 12
+             * discussuid : d5eb8c5a-a078-4f6f-97aa-c2fa7e04ccbc
+             * discussusername : yun6
+             * targetuid :
+             * targetusername :
+             */
+
+            private String content;
+            private int id;
             private String discussuid;
             private String discussusername;
             private String targetuid;
             private String targetusername;
-            private String content;
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
 
             public int getId() {
                 return id;
@@ -175,8 +221,6 @@ public class TrendsBean {
             public void setId(int id) {
                 this.id = id;
             }
-
-            private int id;
 
             public String getDiscussuid() {
                 return discussuid;
@@ -208,14 +252,6 @@ public class TrendsBean {
 
             public void setTargetusername(String targetusername) {
                 this.targetusername = targetusername;
-            }
-
-            public String getContent() {
-                return content;
-            }
-
-            public void setContent(String conent) {
-                this.content = content;
             }
         }
     }
