@@ -110,31 +110,15 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
                     if(args.length >= 2){
                         sendPraise((int)args[0],(int)args[1]);
                     }
+                }else if(type == TYPE_REPLY){
+                    //打开动态的评论或者回复的输入框
+                    if(args.length >= 4){
+                        openDiscussWindow((int)args[0],(int)args[1],(int)args[2],String.valueOf(args[3]));
+                    }
                 }
 
             }
         });
-
-        //动态条目中嵌套列表条目的点击事件监听
-        trendsAdapter.setDiscussItemClickHandler(new BaseAdapter.ItemClickHandler() {
-            @Override
-            public void itemClick(int position, BaseAdapter.BaseViewHolder holder) {
-
-            }
-
-            /**
-             * 不定参数
-             * @param args trendsid,discussid,targettype,targetuid
-             */
-            @Override
-            public void itemClick(int type,Object[] args) {
-                //打开动态的评论或者回复的输入框
-                if(args.length >= 4){
-                    openDiscussWindow((int)args[0],(int)args[1],(int)args[2],String.valueOf(args[3]));
-                }
-            }
-        });
-
 
         /**
          * 刷新的监听

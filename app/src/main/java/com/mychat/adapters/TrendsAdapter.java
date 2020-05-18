@@ -42,15 +42,6 @@ public class TrendsAdapter extends BaseAdapter {
         return R.layout.layout_trends_item;
     }
 
-
-    /**
-     * 设置嵌套适配器
-     * @param itemClickHandler
-     */
-    public void setDiscussItemClickHandler(ItemClickHandler itemClickHandler){
-        this.itemClickHandler = itemClickHandler;
-    }
-
     @Override
     public void bindData(BaseViewHolder holder, Object o) {
         //当前的动态数据

@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi;
 import com.mychat.R;
 import com.mychat.activitys.own.UserInfoActivity;
 import com.mychat.base.BaseAdapter;
+import com.mychat.fragments.trends.TrendsFragment;
 import com.mychat.module.bean.TrendsBean;
 
 import java.util.List;
@@ -120,7 +121,7 @@ public class TrendsDiscussAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if(itemClickHandler != null){
                     // trendsid,discussid,targettype,targetuid
-                    itemClickHandler.itemClick(trendsid,data.getId(),2,data.getDiscussuid());
+                    itemClickHandler.itemClick(TrendsFragment.TYPE_REPLY,trendsid,data.getId(),2,data.getDiscussuid());
                 }
             }
         });
