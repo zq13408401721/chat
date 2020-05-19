@@ -24,7 +24,7 @@
         android:text=""></TextView>
     <ImageView
         android:id="@+id/item_arrow_right"
-        android:layout_width="40dp"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:src="@mipmap/arrow_right"
         app:layout_constraintTop_toTopOf="parent"

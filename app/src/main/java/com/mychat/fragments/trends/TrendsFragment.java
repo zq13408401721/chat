@@ -52,7 +52,7 @@ import butterknife.OnClick;
 public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersenter> implements TrendsStract.TrendsListView {
 
     public static final int TYPE_DISCUSS = 100; //评论
-    public static final int TYPE_REPLY = 200; //评论
+    public static final int TYPE_REPLY = 200; //回复
     public static final int TYPE_PRAISE = 300; //点赞
 
 
@@ -336,6 +336,7 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
         for(TrendsBean.DataBean item:list){
             if(item.getId() == praiseBean.getData().getTrendsid()){
                 praiseList = item.getPraise();
+                break;
             }
         }
         String username = SpUtils.getInstance().getString("username");
@@ -343,13 +344,13 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
         if(praiseBean.getErr() == 40003){
             //成功取消点赞
             if(praiseList != null){
-                for(TrendsBean.DataBean.PraiseBean item:praiseList){
-                    if(item.getUsername().equals(username)){
-                        praiseList.remove(item); //删除取消点赞的用户数据
+                for(int i=0; i<praiseList.size(); i++) {
+                    if (praiseList.get(i).getUsername().equals(username)) {
+                        praiseList.remove(i); //删除取消点赞的用户数据
+                        trendsAdapter.notifyItemRemoved(i);  //调用删除adapter的条目做局部刷新
                         break;
                     }
                 }
-                trendsAdapter.notifyDataSetChanged();
             }
         }else if(praiseBean.getErr() == 200){
             if(praiseList != null) {
@@ -358,7 +359,8 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
                 userinfo.setUid(praiseBean.getData().getUid());
                 userinfo.setUsername(praiseBean.getData().getUsername());
                 praiseList.add(userinfo);
-                trendsAdapter.notifyDataSetChanged();
+                trendsAdapter.notifyItemInserted(praiseList.size()-1); //插入数据之后的局部刷新
+                //trendsAdapter.notifyDataSetChanged();
             }
         }
     }
