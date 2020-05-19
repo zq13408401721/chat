@@ -258,7 +258,23 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
         if(dialog != null) dialog.dismiss();
         dialog = null;
 
-
+        if(discussBean.getErr() == 200){
+            //回复成功把回复的数据添加到对一个的回复集合
+            TrendsBean.DataBean.DiscussBean discuss = new TrendsBean.DataBean.DiscussBean();
+            discuss.setId(discussBean.getData().getDiscussid());
+            discuss.setDiscussuid(discussBean.getData().getDiscussuid());
+            discuss.setDiscussusername(discussBean.getData().getDiscussusername());
+            discuss.setContent(discussBean.getData().getContent());
+            int i;
+            for(i=0; i<list.size(); i++){
+                if(list.get(i).getId() == curTrendsId){
+                    list.get(i).getDiscuss().add(discuss);
+                    break;
+                }
+            }
+            //局部刷新列表条目的某条数据
+            trendsAdapter.notifyItemChanged(i);
+        }
 
 
 

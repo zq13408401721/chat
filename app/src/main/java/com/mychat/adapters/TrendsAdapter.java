@@ -82,6 +82,7 @@ public class TrendsAdapter extends BaseAdapter {
 
         //显示点赞和评论的数量
         TextView txtDiscuss = (TextView) holder.getView(R.id.txt_discuss);
+        //评论的数量
         txtDiscuss.setText(String.valueOf(data.getDiscussNum()));
         txtDiscuss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +95,8 @@ public class TrendsAdapter extends BaseAdapter {
 
         //显示点赞的所有用户
         TextView txtPraise = (TextView) holder.getView(R.id.txt_praise);
+        //点赞的数量显示
+        txtPraise.setText(String.valueOf(data.getPraise().size()));
         txtPraise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

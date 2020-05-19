@@ -23,7 +23,7 @@ public class Constant {
     //上传接口的基础地址
     public static final String BASE_UPLOAD_IMAGE_URL = "http://yun918.cn/study/public/";
     //聊天服务的基础地址
-    public static final String BASE_CHAT_URL = "http://cdwan.cn:9001/";
+    public static final String BASE_CHAT_URL = "http://192.168.4.158:9001/";
 
 
     public static void setCurItemVo(FaceListItemVo curItemVo) {

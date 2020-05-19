@@ -1,6 +1,7 @@
 package com.mychat;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
         initData();
 
         SpUtils.getInstance().setValue("uid","100");
+
+        Intent intent = new Intent();
+        intent.setAction("chat_view");
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void initView(){
