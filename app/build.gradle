@@ -99,4 +99,8 @@ dependencies {
     implementation 'cn.jiguang.sdk:jcore:2.3.4'  // 此处以JCore 2.3.4 版本为例。
 
 
+    implementation project(':chatim');
+
+
+
 }

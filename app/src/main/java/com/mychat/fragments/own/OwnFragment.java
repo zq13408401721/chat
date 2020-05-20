@@ -113,8 +113,15 @@ public class OwnFragment extends BaseFragment {
      * 调整设置页面
      */
     private void gotoSetting(){
-        Intent intent = new Intent(context, SettingActivitiy.class);
+        /*Intent intent = new Intent(context, SettingActivitiy.class);
+        startActivityForResult(intent,REQUEST_LOGIN_CODE);*/
+
+        //调用组件化中的功能
+        //intent隐式打开module中的activity
+        Intent intent = new Intent();
+        intent.setAction("settingactivity");
         startActivityForResult(intent,REQUEST_LOGIN_CODE);
+
     }
 
     /**

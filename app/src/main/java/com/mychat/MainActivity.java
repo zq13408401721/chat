@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -64,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
         SpUtils.getInstance().setValue("uid","100");
 
-        Intent intent = new Intent();
-        intent.setAction("chat_view");
-        startActivity(intent);
     }
 
     @Override

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.chatim">
+
+    <application>
+        <!--设置settingActivity 可以被外部打开-->
+        <activity android:name=".SettingActivity">
+            <intent-filter>
+                <action android:name="settingactivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
