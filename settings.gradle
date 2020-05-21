@@ -1,3 +1,4 @@
 rootProject.name='MyChat'
 include ':app'
 include ':chatim'
+include ':imgpreview'

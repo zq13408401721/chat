@@ -16,6 +16,55 @@
     如：intent隐式打开
 
 
+打包jar （只包含项目代码，不包含res目录资源）
+1.创建module
+    注意：观察项目的settings.gradle中是否有引入库 include "xxx"
+2.库的build.grade文件
+    注意：apply plugin: 'com.android.library' 代表当前是library库
+3.打包jar的gradle代码（groovy）
+    注意：在库的build.gradle文件中最外层添加一下代码
+
+    def _BASENAME = "ChatIM";
+    def _VERSION = "_V1.0";
+    def _DestinationPath = "build"; //生成jar包的位置
+    def zipFile = file('build/intermediates/aar_main_jar/debug/classes.jar'); //待打包文件位置
+
+    task deleteBuild(type:Delete){
+        delete _DestinationPath + _BASENAME + _VERSION + ".jar"
+    }
+
+    task makeJar(type:Jar){
+        from zipTree(zipFile)
+        from fileTree(dir:'src/main',includes:['assets/**']) //将assets目录打入jar包
+        baseName = _BASENAME + _VERSION
+        destinationDir = file(_DestinationPath)
+    }
+
+    makeJar.dependsOn(deleteBuild, build)
+
+4.在android studio的右边gradle任务列表
+    注意：执行任务的目录 项目名/库名/Tasks/other/makeJar
+
+
+aar包  （包含项目代码和项目的res资源）
+如何生成aar包
+1.把当前库引入到项目的app(module)中，编译一次
+    注意：build/outputs/aar/xxx.aar
+
+2.在android studio的右边gradle任务列表中
+    注意：项目名/库名/Tasks/build/build任务
+
+
+库中导入的依赖
+1.库中的依赖版本和项目不一致？
+
+
+2.库和项目中依赖的重复？
+    如：https://blog.csdn.net/zhang721677/article/details/79752433
+
+3.implementation与api
+    注意：implementation不公开导入的依赖
+         api公开导入的依赖
 
 
 

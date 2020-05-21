@@ -90,10 +90,13 @@ dependencies {
     // 此处以JPush 3.6.0 版本为例。
     implementation 'cn.jiguang.sdk:jcore:2.3.4'
     implementation files('libs/chatim-release.aar')
+    implementation files('libs/imgpreview-release.aar')
     // 此处以JCore 2.3.4 版本为例。
     //compile project(':chatim')
     //引入chatim库源码
     //implementation project(':chatim')
     //引入chatim jar包的方式 不包括资源文件
     //implementation files('libs/ChatIM_V1.0.jar')
+
+
 }

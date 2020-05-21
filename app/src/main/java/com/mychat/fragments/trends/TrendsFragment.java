@@ -44,6 +44,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -94,8 +95,14 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
             @Override
             public void itemClick(int position, BaseAdapter.BaseViewHolder holder) {
                 //打开动态的详情页面
-
-
+                String[] imgs = list.get(position).getResources().split("$");
+                if(imgs.length > 0){
+                    //隐式 跳转到sdk的图片预览
+                    Intent intent = new Intent();
+                    intent.setAction("previewactivity");
+                    intent.putExtra("url",imgs[0]);
+                    startActivity(intent);
+                }
             }
             //不定参数
             @Override

@@ -56,40 +56,42 @@ public class TrendsDiscussAdapter extends BaseAdapter {
         //判断当前的数据是评论还是回复
         if(!TextUtils.isEmpty(data.getTargetuid())){
             //当前是回复数据 AA回复BB:XXXX
-            String content = data.getDiscussusername()+"回复"+data.getTargetusername()+":"+data.getContent();
-            SpannableString spannableString = new SpannableString(content);
-            //计算富文本中样式和点击范围的开始和结束位置
-            int start=0,end=0;
-            end = data.getDiscussusername().length();
-            //设置用户名的颜色
-            ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#3F739C"));
-            spannableString.setSpan(colorSpan,start,end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            //处理点击回复数据的用户名
-            ClickableSpan discussClick = new ClickableSpan() {
-                @Override
-                public void onClick(@NonNull View widget) {
-                    Toast.makeText(mContext,"点击的用户："+data.getDiscussusername(),Toast.LENGTH_SHORT).show();
-                    //打开用户信息的界面
-                    openUserInfoActivity(data.getDiscussuid());
-                }
-            };
-            spannableString.setSpan(discussClick,start,end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            //设置目标用户的名字颜色
-            start = end+2;
-            end = start+data.getTargetusername().length()+1;
-            ForegroundColorSpan targetColorSpan = new ForegroundColorSpan(Color.parseColor("#3F739C"));
-            spannableString.setSpan(targetColorSpan,start,end,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            //处理被点击数据中的用户名
-            ClickableSpan targetClick = new ClickableSpan() {
-                @Override
-                public void onClick(@NonNull View widget) {
-                    Toast.makeText(mContext,"点击的用户："+data.getTargetusername(),Toast.LENGTH_SHORT).show();
-                    openUserInfoActivity(data.getTargetuid());
-                }
-            };
-            //设置点击事件
-            spannableString.setSpan(targetClick,start,end,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            txtContent.setText(spannableString);
+            if(!TextUtils.isEmpty(data.getDiscussusername())) {
+                String content = data.getDiscussusername() + "回复" + data.getTargetusername() + ":" + data.getContent();
+                SpannableString spannableString = new SpannableString(content);
+                //计算富文本中样式和点击范围的开始和结束位置
+                int start = 0, end = 0;
+                end = data.getDiscussusername().length();
+                //设置用户名的颜色
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#3F739C"));
+                spannableString.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                //处理点击回复数据的用户名
+                ClickableSpan discussClick = new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        Toast.makeText(mContext, "点击的用户：" + data.getDiscussusername(), Toast.LENGTH_SHORT).show();
+                        //打开用户信息的界面
+                        openUserInfoActivity(data.getDiscussuid());
+                    }
+                };
+                spannableString.setSpan(discussClick, start, end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                //设置目标用户的名字颜色
+                start = end + 2;
+                end = start + data.getTargetusername().length() + 1;
+                ForegroundColorSpan targetColorSpan = new ForegroundColorSpan(Color.parseColor("#3F739C"));
+                spannableString.setSpan(targetColorSpan, start, end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                //处理被点击数据中的用户名
+                ClickableSpan targetClick = new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        Toast.makeText(mContext, "点击的用户：" + data.getTargetusername(), Toast.LENGTH_SHORT).show();
+                        openUserInfoActivity(data.getTargetuid());
+                    }
+                };
+                //设置点击事件
+                spannableString.setSpan(targetClick, start, end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                txtContent.setText(spannableString);
+            }
         }else{
             //当前是评论数据 AA:XXX
             String content = data.getDiscussusername()+":"+data.getContent();
