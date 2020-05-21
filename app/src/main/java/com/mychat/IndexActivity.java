@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.behaviorexample.information.InfomationFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mychat.activitys.web.WebActivity;
 import com.mychat.fragments.home.HomeFragment;
@@ -31,6 +32,9 @@ import com.mychat.utils.SpUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 热插拔
+ */
 public class IndexActivity extends AppCompatActivity {
 
     @BindView(R.id.fragment_box)
@@ -38,9 +42,11 @@ public class IndexActivity extends AppCompatActivity {
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
-    HomeFragment homeFragment;
-    TrendsFragment trendsFragment;
-    OwnFragment ownFragment;
+    HomeFragment homeFragment;  //主页
+    TrendsFragment trendsFragment;  //动态
+    OwnFragment ownFragment;  //我的
+    //资讯
+    InfomationFragment infomationFragment;
 
     FragmentTransaction fragmentTransaction;
     //用户隐私协议的提示框
@@ -66,13 +72,16 @@ public class IndexActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()){
                     case R.id.menu_home:
                         fragmentTransaction.replace(R.id.fragment_box,homeFragment).commit();
-                        break;
+                        return true;
                     case R.id.menu_trends:
                         fragmentTransaction.replace(R.id.fragment_box,trendsFragment).commit();
-                        break;
+                        return true;
                     case R.id.menu_own:
                         fragmentTransaction.replace(R.id.fragment_box,ownFragment).commit();
-                        break;
+                        return true;
+                    case R.id.menu_infomation:
+                        fragmentTransaction.replace(R.id.fragment_box,infomationFragment).commit();
+                        return true;
                 }
                 return false;
             }
@@ -87,6 +96,7 @@ public class IndexActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         trendsFragment = new TrendsFragment();
         ownFragment = new OwnFragment();
+        infomationFragment = new InfomationFragment();
     }
 
     //第一次进入软件的时候，弹出用户协议的提示框

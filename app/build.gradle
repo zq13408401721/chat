@@ -91,6 +91,7 @@ dependencies {
     implementation 'cn.jiguang.sdk:jcore:2.3.4'
     implementation files('libs/chatim-release.aar')
     implementation files('libs/imgpreview-release.aar')
+    implementation files('libs/information-release.aar')
     // 此处以JCore 2.3.4 版本为例。
     //compile project(':chatim')
     //引入chatim库源码
