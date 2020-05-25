@@ -26,9 +26,9 @@
         <activity android:name=".activitys.own.HeadCropActivity"/>
         <activity android:name=".activitys.own.UserInfoActivity"/>
         <activity
-            android:name=".ChatActivity"
+            android:name=".IndexActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
-        <activity android:name=".IndexActivity"
+        <activity android:name=".ChatActivity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +36,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--聊天服务-->
+        <service android:name=".services.IMService"
+            android:exported="false"></service>
+
         <!--<service
             android:name=".services.ChatService"
             android:process="chatserver" />-->

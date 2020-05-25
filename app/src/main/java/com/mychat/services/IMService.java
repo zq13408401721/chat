@@ -1,6 +1,16 @@
 package com.mychat.services;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
+
+import androidx.annotation.Nullable;
+
 import com.mychat.BuildConfig;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,10 +25,14 @@ import okio.ByteString;
  * 使用OKHttp协议实现websocket长连接
  *
  */
-public class IMService {
+public class IMService extends Service {
 
     //websocket的基础地址
     private static String url;
+    private WebSocket webSocket;
+
+    //和外面通信的接口
+    IMBinder imBinder;
 
     //初始化基础地址
     static {
@@ -27,6 +41,13 @@ public class IMService {
         }else{
             url = "ws://cdwan.cn:9001/webserver";  //发布正版 用外网正式的服务
         }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        imBinder = new IMBinder();
+        init();
     }
 
     /**
@@ -57,12 +78,13 @@ public class IMService {
 
         /**
          * websocket连接状态打开
-         * @param webSocket
+         * @param ws
          * @param response
          */
         @Override
-        public void onOpen(WebSocket webSocket, Response response) {
-            super.onOpen(webSocket, response);
+        public void onOpen(WebSocket ws, Response response) {
+            super.onOpen(ws, response);
+            webSocket = ws;
         }
 
         /**
@@ -73,6 +95,22 @@ public class IMService {
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             super.onMessage(webSocket, text);
+            try {
+                JSONObject json = new JSONObject(text);
+                if(json.has("event")){
+                    String action = json.getString("event");
+                    switch (action){
+                        case "join":
+                            break;
+                        case "talk": //
+                            break;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
         }
 
         /**
@@ -117,6 +155,33 @@ public class IMService {
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
             super.onFailure(webSocket, t, response);
         }
+    }
+
+
+    /**
+     * 提供IMBinder给外面使用
+     * @param intent
+     * @return
+     */
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return imBinder;
+    }
+
+    /**
+     * 定义IMBinder和activity交互
+     */
+    public class IMBinder extends Binder {
+
+        //有用户加入进来的接口方法 参数是json结构的字符串
+        public void sendMsg(String jsonMsg){
+            if(webSocket != null){
+                webSocket.send(jsonMsg);
+            }
+        }
+
+
     }
 
 }

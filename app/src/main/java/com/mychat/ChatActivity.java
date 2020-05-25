@@ -1,6 +1,10 @@
 package com.mychat;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -37,8 +41,12 @@ import com.mychat.module.apis.UploadApi;
 import com.mychat.module.vo.ChatMsgBean;
 import com.mychat.module.vo.FaceListItemVo;
 import com.mychat.module.vo.FaceTabVo;
+import com.mychat.services.IMService;
 import com.mychat.utils.SpUtils;
 import com.mychat.utils.SystemUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -108,6 +116,23 @@ public class ChatActivity extends AppCompatActivity {
     List<String> chatAllImages;
     List<ImageFragment> imgFragmentList;
 
+    //获取和service通信的类
+    IMService.IMBinder imBinder;
+    /**
+     * 创建连接service的变量
+     */
+    private ServiceConnection imConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            imBinder = (IMService.IMBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +147,14 @@ public class ChatActivity extends AppCompatActivity {
         initMsg();
         chatInput = new StringBuilder();
         uid = SpUtils.getInstance().getString("uid");
+        //初始化连接service
+        Intent intent = new Intent(this,IMService.class);
+        bindService(intent,imConn,BIND_AUTO_CREATE); //绑定服务
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     /**
@@ -312,6 +345,15 @@ public class ChatActivity extends AppCompatActivity {
             Toast.makeText(this,"请输入内容",Toast.LENGTH_SHORT).show();
             return;
         }
+        //通过服务器发送聊天消息
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("event","talk");
+            jsonObject.put("data",content);
+            imBinder.sendMsg(jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         int own = (int) (Math.random()*3);
         String _uid = own == 1 ? uid : "200";
@@ -467,4 +509,13 @@ public class ChatActivity extends AppCompatActivity {
         previewFragment.show(getSupportFragmentManager(),"preview");
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(imConn != null) {
+            unbindService(imConn);
+            imConn = null;
+        }
+    }
 }

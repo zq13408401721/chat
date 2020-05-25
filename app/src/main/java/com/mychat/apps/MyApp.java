@@ -25,8 +25,8 @@ public class MyApp extends Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
 
-        IMService imService = new IMService();
-        imService.init();
+       /* IMService imService = new IMService();
+        imService.init();*/
     }
 
     private void initUM(){
