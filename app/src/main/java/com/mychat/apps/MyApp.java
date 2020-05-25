@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
 
+import com.mychat.services.IMService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -23,6 +24,9 @@ public class MyApp extends Application {
 
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+
+        IMService imService = new IMService();
+        imService.init();
     }
 
     private void initUM(){
