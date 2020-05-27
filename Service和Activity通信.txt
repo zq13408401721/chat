@@ -3,7 +3,7 @@
 Activity <----> Service
 
 Activity ---->  Service  (activity如何调用Service)
-实现方式 通过IBinder
+实现方式 1.通过IBinder  2.广播
 
 案例：https://www.jb51.net/article/137607.htm
 
@@ -14,5 +14,34 @@ Service  ----->  Activity   (Service如何通知Activity)
 接口回调实现Service->Activity：https://www.jb51.net/article/137607.htm
 
 广播实现Service->Activity:https://blog.csdn.net/huangshenshen_/article/details/60144691
+
+总结：
+    1.Service，为什么我们会用到Service？
+    2.Service和Activity之间的数据传递，如何传递的有哪些具体的方式？
+
+
+
+/******************理论点的记忆方法*********************/
+广播的介绍
+https://www.jianshu.com/p/f348f6d7fe59
+
+标准广播
+
+有序广播
+
+本地广播
+
+注册方式：
+
+    静态注册
+
+    动态注册
+
+
+
+
+
+
+
 
 

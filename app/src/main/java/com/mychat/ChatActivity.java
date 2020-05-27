@@ -1,8 +1,10 @@
 package com.mychat;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -23,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -63,6 +66,11 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class ChatActivity extends AppCompatActivity {
+
+    //定义一个聊天功能模块的广播action
+    public static final String CHAT_BROADCAST_ACTION = "com.mychat.chat_action";
+
+
 
     @BindView(R.id.txt_back)
     TextView txtBack;
@@ -121,6 +129,13 @@ public class ChatActivity extends AppCompatActivity {
     IMService.IMBinder imBinder;
 
     Context context;
+
+    /***************广播接收*****************/
+    //本地广播
+    LocalBroadcastManager localBroadcastManager;
+    LocalReceiver localReceiver;
+
+
     /**
      * 创建连接service的变量
      */
@@ -152,6 +167,7 @@ public class ChatActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);
         context = this;
+        initBroadCastReceiver();
         initSmailTab();
         initFaceList();
         initWidget();
@@ -169,6 +185,16 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    /**
+     * 初始化广播
+     */
+    private void initBroadCastReceiver(){
+        localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localReceiver = new LocalReceiver();
+        IntentFilter intentFilter = new IntentFilter(CHAT_BROADCAST_ACTION);
+        localBroadcastManager.registerReceiver(localReceiver,intentFilter);
     }
 
     /**
@@ -524,12 +550,31 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
+
+    /***********************场景广播接收器，接收Service发过来的数据****************************/
+
+    class LocalReceiver extends BroadcastReceiver{
+
+        //接收数据的方法
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i("BroadCast:",intent.getStringExtra("data"));
+        }
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //解绑服务
         if(imConn != null) {
             unbindService(imConn);
             imConn = null;
+        }
+        //取消广播注册
+        if(localReceiver != null){
+            localBroadcastManager.unregisterReceiver(localReceiver);
+            localReceiver = null;
         }
     }
 }

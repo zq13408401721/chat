@@ -7,8 +7,10 @@ import android.os.IBinder;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.mychat.BuildConfig;
+import com.mychat.ChatActivity;
 import com.mychat.utils.SpUtils;
 
 import org.json.JSONException;
@@ -38,6 +40,8 @@ public class IMService extends Service {
 
     //service->activity的回调接口
     IMessage iMessage;
+    //本地广播的管理类
+    LocalBroadcastManager localBroadcastManager;
 
     //初始化基础地址
     static {
@@ -51,6 +55,7 @@ public class IMService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
         imBinder = new IMBinder();
         //初始化之前确定之前是否已经登录过，是否有token的缓存存在
         String token = SpUtils.getInstance().getString("token");
@@ -115,7 +120,8 @@ public class IMService extends Service {
                         case "join":
                             break;
                         case "talk": // 接收到聊天消息推送到activity或fragment
-                            pushTalkMsg(data);
+                            // pushTalkMsg(data);  //接口回调实现通信
+                            pushBroadCastMsg(data);  //广播实现通信
                             break;
                     }
                 }
@@ -213,6 +219,7 @@ public class IMService extends Service {
      * @param string
      */
     private void pushTalkMsg(String string){
+        //通过接口回调的形式通知activity
         if(iMessage != null){
             iMessage.pushMsg(string);
         }
@@ -220,6 +227,12 @@ public class IMService extends Service {
 
 
     /*************定义广播实现Service通知Activity**********************/
+    private void pushBroadCastMsg(String string){
+        //通过广播通知activity
+        Intent intent = new Intent(ChatActivity.CHAT_BROADCAST_ACTION);
+        intent.putExtra("data",string);
+        localBroadcastManager.sendBroadcast(intent);
 
+    }
 
 }
