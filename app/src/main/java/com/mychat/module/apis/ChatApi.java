@@ -70,17 +70,18 @@ public interface ChatApi {
 
     @POST("discuss/discussCommit")
     @FormUrlEncoded
-    Flowable<DiscussBean> sendDiscuss(@Field("trendsid") int trendsid,@Field("content") String content);
+    Flowable<DiscussBean> sendDiscuss(@Field("trendsid") int trendsid,@Field("trendsuid") String trendsuid,@Field("content") String content);
 
     /**
      * 点赞取消点赞
      * @param trendsid
+     * @param trendsuid
      * @param type
      * @return
      */
     @POST("praise/addPraise")
     @FormUrlEncoded
-    Flowable<PraiseBean> sendPraise(@Field("trendsid") int trendsid, @Field("type") int type);
+    Flowable<PraiseBean> sendPraise(@Field("trendsid") int trendsid,@Field("trendsuid") String trendsuid, @Field("type") int type);
 
 
 

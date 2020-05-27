@@ -111,16 +111,16 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
                     if(args.length > 0) {
                         curTrendsId = (int) args[0];
                         //评论
-                        openDiscussWindow(curTrendsId,0,0,null);
+                        openDiscussWindow(curTrendsId, (String) args[1],0,0,null);
                     }
                 }else if(type == TYPE_PRAISE){
                     if(args.length >= 2){
-                        sendPraise((int)args[0],(int)args[1]);
+                        sendPraise((int)args[0], (String) args[1],(int)args[2]);
                     }
                 }else if(type == TYPE_REPLY){
                     //打开动态的评论或者回复的输入框
                     if(args.length >= 4){
-                        openDiscussWindow((int)args[0],(int)args[1],(int)args[2],String.valueOf(args[3]));
+                        openDiscussWindow((int)args[0],String.valueOf(args[1]),(int)args[2],(int)args[3],String.valueOf(args[4]));
                     }
                 }
 
@@ -292,7 +292,7 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
     /**
      * 打开输入框
      */
-    private void openDiscussWindow(int trendsid,int discussid,int targettype,String targetuid){
+    private void openDiscussWindow(int trendsid,String trendsuid,int discussid,int targettype,String targetuid){
         if(dialog == null){
             curTrendsId = trendsid;
             View view = LayoutInflater.from(context).inflate(R.layout.layout_input_window,null);
@@ -336,7 +336,7 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
                     }
                     //向后退回复接口传递数据
                     if(discussid == 0 && targetuid == null){
-                        persenter.sendDiscuss(trendsid,word);
+                        persenter.sendDiscuss(trendsid,trendsuid,word);
                     }else{
                         persenter.sendReply(trendsid,discussid,targettype,targetuid,word);
                     }
@@ -393,9 +393,9 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
      * @param trendsid
      * @param type  0 点赞 1取消点赞
      */
-    private void sendPraise(int trendsid,int type){
+    private void sendPraise(int trendsid,String trendsuid,int type){
         if(trendsid > 0){
-            persenter.sendPraise(trendsid,type);
+            persenter.sendPraise(trendsid,trendsuid,type);
         }
     }
 

@@ -56,14 +56,14 @@ public interface TrendsStract {
          * @param trendsid
          * @param content
          */
-        void sendDiscuss(int trendsid,String content);
+        void sendDiscuss(int trendsid,String trendsuid,String content);
 
         /**
          * 点赞或取消点赞
          * @param trendsid
          * @param type 0 点赞 1取消点赞
          */
-        void sendPraise(int trendsid,int type);
+        void sendPraise(int trendsid,String trendsuid,int type);
     }
 
 }

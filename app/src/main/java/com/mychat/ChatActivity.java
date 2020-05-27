@@ -1,6 +1,7 @@
 package com.mychat;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -118,6 +119,8 @@ public class ChatActivity extends AppCompatActivity {
 
     //获取和service通信的类
     IMService.IMBinder imBinder;
+
+    Context context;
     /**
      * 创建连接service的变量
      */
@@ -125,6 +128,14 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             imBinder = (IMService.IMBinder) service;
+            //IMService匿名的内部类
+            imBinder.addIMessageListener(new IMService.IMessage() {
+                //接收TalkService消息推送
+                @Override
+                public void pushMsg(String msg) {
+                    Toast.makeText(context,"接收到聊天消息："+msg,Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         @Override
@@ -140,6 +151,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);
+        context = this;
         initSmailTab();
         initFaceList();
         initWidget();
@@ -147,9 +159,11 @@ public class ChatActivity extends AppCompatActivity {
         initMsg();
         chatInput = new StringBuilder();
         uid = SpUtils.getInstance().getString("uid");
-        //初始化连接service
+        //初始化连接service关联
         Intent intent = new Intent(this,IMService.class);
         bindService(intent,imConn,BIND_AUTO_CREATE); //绑定服务
+
+
     }
 
     @Override

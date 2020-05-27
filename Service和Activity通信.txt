@@ -1,0 +1,18 @@
+如何实现Service和activity之间的数据传递？
+
+Activity <----> Service
+
+Activity ---->  Service  (activity如何调用Service)
+实现方式 通过IBinder
+
+案例：https://www.jb51.net/article/137607.htm
+
+
+Service  ----->  Activity   (Service如何通知Activity)
+实现方式  1.接口回调   2.广播
+
+接口回调实现Service->Activity：https://www.jb51.net/article/137607.htm
+
+广播实现Service->Activity:https://blog.csdn.net/huangshenshen_/article/details/60144691
+
+

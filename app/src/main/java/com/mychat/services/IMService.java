@@ -4,10 +4,12 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
 import com.mychat.BuildConfig;
+import com.mychat.utils.SpUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,10 +36,13 @@ public class IMService extends Service {
     //和外面通信的接口
     IMBinder imBinder;
 
+    //service->activity的回调接口
+    IMessage iMessage;
+
     //初始化基础地址
     static {
         if(BuildConfig.DEBUG){
-           url = "ws://192.168.4.158:9001/webserver";   //debug模式用本地的服务
+           url = "ws://192.168.4.159:9001/webserver";   //debug模式用本地的服务
         }else{
             url = "ws://cdwan.cn:9001/webserver";  //发布正版 用外网正式的服务
         }
@@ -47,13 +52,17 @@ public class IMService extends Service {
     public void onCreate() {
         super.onCreate();
         imBinder = new IMBinder();
-        init();
+        //初始化之前确定之前是否已经登录过，是否有token的缓存存在
+        String token = SpUtils.getInstance().getString("token");
+        if(!TextUtils.isEmpty(token)){
+            init(token);
+        }
     }
 
     /**
      * 初始化连接对象
      */
-    public void init(){
+    private void init(String token){
         //okhttp对象初始化
         OkHttpClient client = new OkHttpClient.Builder()
                 .writeTimeout(10, TimeUnit.SECONDS)
@@ -64,6 +73,7 @@ public class IMService extends Service {
         //请求的初始化
         Request request = new Request.Builder()
                 .url(url)
+                .header("x-token",token)
                 .build();
         //实例化监听对象
         WSListener listener = new WSListener();
@@ -99,10 +109,13 @@ public class IMService extends Service {
                 JSONObject json = new JSONObject(text);
                 if(json.has("event")){
                     String action = json.getString("event");
+                    //长连接中的消息数据
+                    String data = json.getString("data");
                     switch (action){
                         case "join":
                             break;
-                        case "talk": //
+                        case "talk": // 接收到聊天消息推送到activity或fragment
+                            pushTalkMsg(data);
                             break;
                     }
                 }
@@ -181,7 +194,32 @@ public class IMService extends Service {
             }
         }
 
+        //定义一个接收接口回调方法
+        public void addIMessageListener(IMessage im){
+            iMessage = im;
+        }
 
     }
+
+    /*******************定义接口回调实现Service通知activity**********************/
+
+    public interface IMessage{
+        //推送消息
+        void pushMsg(String msg);
+    }
+
+    /**
+     * 实现聊天消息的推送
+     * @param string
+     */
+    private void pushTalkMsg(String string){
+        if(iMessage != null){
+            iMessage.pushMsg(string);
+        }
+    }
+
+
+    /*************定义广播实现Service通知Activity**********************/
+
 
 }

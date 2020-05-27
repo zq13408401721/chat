@@ -55,8 +55,8 @@ public class TrendsPagerPersenter extends BasePersenter<TrendsStract.TrendsListV
      * @param content
      */
     @Override
-    public void sendDiscuss(int trendsid, String content) {
-        addSubscribe(HttpManager.getInstance().getChatApi().sendDiscuss(trendsid,content)
+    public void sendDiscuss(int trendsid, String trendsuid,String content) {
+        addSubscribe(HttpManager.getInstance().getChatApi().sendDiscuss(trendsid,trendsuid,content)
                 .compose(RxUtils.rxScheduler())
                 .subscribeWith(new CommonSubscriber<DiscussBean>(mView) {
                     @Override
@@ -69,11 +69,14 @@ public class TrendsPagerPersenter extends BasePersenter<TrendsStract.TrendsListV
     /**
      * 点赞的接口
      * @param trendsid
+     * @param trendsuid
      * @param type 0 点赞 1取消点赞
      */
+
+
     @Override
-    public void sendPraise(int trendsid, int type) {
-        addSubscribe(HttpManager.getInstance().getChatApi().sendPraise(trendsid,type)
+    public void sendPraise(int trendsid,String trendsuid, int type) {
+        addSubscribe(HttpManager.getInstance().getChatApi().sendPraise(trendsid,trendsuid,type)
                 .compose(RxUtils.rxScheduler())
                 .subscribeWith(new CommonSubscriber<PraiseBean>(mView) {
                     @Override

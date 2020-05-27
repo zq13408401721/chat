@@ -112,7 +112,7 @@ public class TrendsAdapter extends BaseAdapter {
                             }
                         }
                         //点赞
-                        itemClickHandler.itemClick(TrendsFragment.TYPE_PRAISE,data.getId(),type);
+                        itemClickHandler.itemClick(TrendsFragment.TYPE_PRAISE,data.getId(),data.getUid(),type);
                     }
                 }
             }

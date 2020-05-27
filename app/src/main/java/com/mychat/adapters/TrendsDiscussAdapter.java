@@ -30,6 +30,7 @@ import java.util.List;
 public class TrendsDiscussAdapter extends BaseAdapter {
 
     public int trendsid;
+    public String trendsuid; //动态的uid
 
     public TrendsDiscussAdapter(List<TrendsBean.DataBean.DiscussBean> list, Context context){
         super(list,context);
@@ -123,7 +124,7 @@ public class TrendsDiscussAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if(itemClickHandler != null){
                     // trendsid,discussid,targettype,targetuid
-                    itemClickHandler.itemClick(TrendsFragment.TYPE_REPLY,trendsid,data.getId(),2,data.getDiscussuid());
+                    itemClickHandler.itemClick(TrendsFragment.TYPE_REPLY,trendsid,trendsuid,data.getId(),2,data.getDiscussuid());
                 }
             }
         });
