@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.mychat.utils.SpUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -42,6 +44,7 @@ public class IMService extends Service {
     IMessage iMessage;
     //本地广播的管理类
     LocalBroadcastManager localBroadcastManager;
+
 
     //初始化基础地址
     static {

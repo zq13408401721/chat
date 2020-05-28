@@ -1,0 +1,25 @@
+进程概念
+
+进程的使用场景
+
+如何去创建进程
+
+AIDL概念
+
+如何创建AIDL的接口类和数据对象
+
+创建AIDL的注意事项
+    1.数据对象的目录结构必须一致
+
+    2.数据对象的重写方法
+
+    3.在AIDL的接口中一定要导入正确的数据对象包路径
+
+AIDL如何去绑定使用（Service）-> stub(extends Binder)
+
+什么是Binder？ https://www.jianshu.com/p/225ccd39a667
+
+实现Service中的Stub接口和Activity之间的调用
+
+AIDL的接口调用
+
