@@ -52,6 +52,10 @@ public class IndexActivity extends AppCompatActivity {
     //用户隐私协议的提示框
     AlertDialog alertDialog;
 
+    //记录当前的fragment id
+    private static int fragmentid;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,7 @@ public class IndexActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentid = menuItem.getItemId();
                 switch (menuItem.getItemId()){
                     case R.id.menu_home:
                         fragmentTransaction.replace(R.id.fragment_box,homeFragment).commit();
@@ -151,5 +156,13 @@ public class IndexActivity extends AppCompatActivity {
             alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             alertDialog.show();
         }
+    }
+
+    /**
+     * 用来判断当前是否显示的是动态的fragment
+     * @return
+     */
+    public static boolean isShowTrendsFragment(){
+        return fragmentid == R.id.menu_trends ? true : false;
     }
 }

@@ -6,12 +6,16 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.mychat.BuildConfig;
 import com.mychat.ChatActivity;
+import com.mychat.IndexActivity;
+import com.mychat.common.Constant;
+import com.mychat.utils.ActivityUtils;
 import com.mychat.utils.SpUtils;
 
 import org.json.JSONException;
@@ -122,10 +126,17 @@ public class IMService extends Service {
                     switch (action){
                         case "join":
                             break;
-                        case "talk": // 接收到聊天消息推送到activity或fragment
+                        case Constant.ACTION_EVENT_TALK: // 接收到聊天消息推送到activity或fragment
                             // pushTalkMsg(data);  //接口回调实现通信
                             pushBroadCastMsg(data);  //广播实现通信
                             break;
+                        case Constant.ACTION_EVENT_PRAISE:  //点赞
+                        case Constant.ACTION_EVENT_DISCUSS:  //评论
+                        case Constant.ACTION_EVENT_REPLY:  //回复
+                            //ActivityUtils.isForeground(IndexActivity.this,"IndexActivity");
+                            pushTrendsMsg(action,data);
+                            break;
+
                     }
                 }
             } catch (JSONException e) {
@@ -235,6 +246,36 @@ public class IMService extends Service {
         Intent intent = new Intent(ChatActivity.CHAT_BROADCAST_ACTION);
         intent.putExtra("data",string);
         localBroadcastManager.sendBroadcast(intent);
+
+    }
+
+    /*********************动态推送操作*****************/
+    private void pushTrendsMsg(String action,String msg){
+        /*if(getApplicationContext().getWindow().getDecorView().getVisibility() == View.VISIBLE){
+
+        }*/
+        //判断当前的inexactivity是否是显示状态
+        if(ActivityUtils.isForeground(getBaseContext(),"IndexActivity")){
+            if(IndexActivity.isShowTrendsFragment()){
+                if(action.equals(Constant.ACTION_EVENT_PRAISE)){   //接收到点赞的推送消息
+
+                }else if(action.equals(Constant.ACTION_EVENT_DISCUSS)){   //接收到评论的推送消息
+
+                }else if(action.equals(Constant.ACTION_EVENT_REPLY)){    //接收到后恢复的推送消息
+
+                }
+            }else{
+                //发通知
+            }
+        }else{
+            // 发通知
+        }
+    }
+
+    /**
+     * 发通知
+     */
+    private void sendNotification(){
 
     }
 

@@ -36,5 +36,13 @@ public class Constant {
     public static final String PATH_CACHE = PATH_DATA + "/chat";
 
 
+    /*********************推送消息的类型*********************/
+    public static final String ACTION_EVENT_TALK =  "talk";  //websocket聊天的消息类型
+    public static final String ACTION_EVENT_PRAISE = "push_praise";  //点赞推送
+    public static final String ACTION_EVENT_DISCUSS = "push_discuss";  //点赞推送
+    public static final String ACTION_EVENT_REPLY = "push_reply";  //点赞推送
+
+
+
 
 }

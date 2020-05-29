@@ -28,10 +28,10 @@
         <activity android:name=".activitys.own.HeadCropActivity" />
         <activity android:name=".activitys.own.UserInfoActivity" />
         <activity
-            android:name=".IndexActivity"
+            android:name=".AidlActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".AidlActivity"
+            android:name=".IndexActivity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,0 +1,29 @@
+功能补充
+
+1. 动态中的变化需要推送
+    寻找推送目标
+
+   a) 点赞---->推送给发动态的人
+   b）评论---->推送给发动态的人
+   c）回复---->推送给发评论的人或发回复人
+
+2. 接收到推送数据的处理
+
+    websocket中接收到点赞，评论，回复
+    a) 推送的对象当前就在动态功能的页面 ----  直接传递推送数据到页面做及时刷新显示
+
+    b) 推送的对象当前不在动态功能的页面 ----  通过发送通知提示用户
+
+
+推送的初始化
+创建websocket连接，创建连接成功以后，通过websocket的join接口发送token
+    如：
+        //通过websocket服务器发送token
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("event","join");
+                    jsonObject.put("data",token);
+                    websocket.send(jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }

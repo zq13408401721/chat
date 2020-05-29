@@ -35,6 +35,14 @@ public abstract class BaseFragment<P extends IBasePersenter> extends Fragment im
     protected Activity activity;
     Unbinder unbinder;
 
+    public boolean isVisible;  //当前fragment是否显示
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        isVisible = isVisibleToUser;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

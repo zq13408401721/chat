@@ -77,11 +77,15 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
     Dialog dialog; //输入窗口
     int curTrendsId;
 
+    //通过广播接收  service的通知 处理对应的点赞，评论，回复
+
 
     @Override
     protected int getLayout() {
         return R.layout.fragment_trends;
     }
+
+
 
     @Override
     protected void initView() {
