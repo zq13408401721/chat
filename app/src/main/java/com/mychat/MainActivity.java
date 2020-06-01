@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     PopupWindow popupWindow;
     List<String> list;
-
     SmileyParser smileyParser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
-
         SpUtils.getInstance().setValue("uid","100");
 
     }

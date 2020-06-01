@@ -15,6 +15,7 @@ import com.mychat.BuildConfig;
 import com.mychat.ChatActivity;
 import com.mychat.IndexActivity;
 import com.mychat.common.Constant;
+import com.mychat.fragments.trends.TrendsFragment;
 import com.mychat.utils.ActivityUtils;
 import com.mychat.utils.SpUtils;
 
@@ -49,11 +50,12 @@ public class IMService extends Service {
     //本地广播的管理类
     LocalBroadcastManager localBroadcastManager;
 
+    String token;
 
     //初始化基础地址
     static {
         if(BuildConfig.DEBUG){
-           url = "ws://192.168.4.159:9001/webserver";   //debug模式用本地的服务
+           url = "ws://192.168.124.7:9001/webserver";   //debug模式用本地的服务
         }else{
             url = "ws://cdwan.cn:9001/webserver";  //发布正版 用外网正式的服务
         }
@@ -65,16 +67,16 @@ public class IMService extends Service {
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         imBinder = new IMBinder();
         //初始化之前确定之前是否已经登录过，是否有token的缓存存在
-        String token = SpUtils.getInstance().getString("token");
+        token = SpUtils.getInstance().getString("token");
         if(!TextUtils.isEmpty(token)){
-            init(token);
+            init();
         }
     }
 
     /**
      * 初始化连接对象
      */
-    private void init(String token){
+    private void init(){
         //okhttp对象初始化
         OkHttpClient client = new OkHttpClient.Builder()
                 .writeTimeout(10, TimeUnit.SECONDS)
@@ -107,6 +109,7 @@ public class IMService extends Service {
         public void onOpen(WebSocket ws, Response response) {
             super.onOpen(ws, response);
             webSocket = ws;
+            joinUser(token);
         }
 
         /**
@@ -221,6 +224,17 @@ public class IMService extends Service {
 
     }
 
+    /*******************注册用户到websocket*************************/
+    private void joinUser(String token){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("event","join");
+            jsonObject.put("data",token);
+            webSocket.send(jsonObject.toString());
+        }catch (JSONException e){
+        }
+    }
+
     /*******************定义接口回调实现Service通知activity**********************/
 
     public interface IMessage{
@@ -255,7 +269,7 @@ public class IMService extends Service {
 
         }*/
         //判断当前的inexactivity是否是显示状态
-        if(ActivityUtils.isForeground(getBaseContext(),"IndexActivity")){
+        if(ActivityUtils.isForeground(getBaseContext(),"com.mychat.IndexActivity")){
             if(IndexActivity.isShowTrendsFragment()){
                 if(action.equals(Constant.ACTION_EVENT_PRAISE)){   //接收到点赞的推送消息
 
@@ -264,6 +278,10 @@ public class IMService extends Service {
                 }else if(action.equals(Constant.ACTION_EVENT_REPLY)){    //接收到后恢复的推送消息
 
                 }
+                Intent intent = new Intent(TrendsFragment.TRENDS_BROADCAST_ACTION);
+                intent.putExtra("data",msg);
+                localBroadcastManager.sendBroadcast(intent);
+
             }else{
                 //发通知
             }

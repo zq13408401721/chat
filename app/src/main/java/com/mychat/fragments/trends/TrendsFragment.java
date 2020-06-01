@@ -1,9 +1,16 @@
 package com.mychat.fragments.trends;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,10 +25,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mychat.ChatActivity;
 import com.mychat.R;
 import com.mychat.activitys.trends.TrendsActivity;
 import com.mychat.adapters.TrendsAdapter;
@@ -34,6 +43,7 @@ import com.mychat.module.bean.PraiseBean;
 import com.mychat.module.bean.ReplyBean;
 import com.mychat.module.bean.TrendsBean;
 import com.mychat.persenters.trends.TrendsPagerPersenter;
+import com.mychat.services.IMService;
 import com.mychat.utils.SpUtils;
 import com.mychat.utils.SystemUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -51,6 +61,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersenter> implements TrendsStract.TrendsListView {
+
+
+    public static final String TRENDS_BROADCAST_ACTION = "com.mychat.trends";
+    public static final String DISCUSS_BROADCAST_ACTION = "com.mychat.discuss";
+    public static final String REPLY_BROADCAST_ACTION = "com.mychat.reply";
 
     public static final int TYPE_DISCUSS = 100; //评论
     public static final int TYPE_REPLY = 200; //回复
@@ -78,6 +93,29 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
     int curTrendsId;
 
     //通过广播接收  service的通知 处理对应的点赞，评论，回复
+    LocalBroadcastManager localBroadcastManager;
+    TrendsFragment.LocalReceiver localReceiver;
+
+
+    /**
+     * 初始化广播
+     */
+    private void initBroadCastReceiver(){
+        localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localReceiver = new TrendsFragment.LocalReceiver();
+        IntentFilter intentFilter = new IntentFilter(TRENDS_BROADCAST_ACTION);
+        localBroadcastManager.registerReceiver(localReceiver,intentFilter);
+    }
+
+    class LocalReceiver extends BroadcastReceiver {
+
+        //接收数据的方法
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i("BroadCast:",intent.getStringExtra("data"));
+        }
+    }
+
 
 
     @Override
@@ -87,8 +125,13 @@ public class TrendsFragment extends BaseFragment<TrendsStract.TrendsListPersente
 
 
 
+
     @Override
     protected void initView() {
+
+        initBroadCastReceiver();
+        Intent intent = new Intent(context,IMService.class);
+        context.startService(intent);
 
         list = new ArrayList<>();
         trendsAdapter = new TrendsAdapter(list,context);
