@@ -17,5 +17,11 @@
             android:layout_height="wrap_content"
             android:text="资讯内容"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/txt_secret"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="获取本地接口中的内容"
+        android:text=""/>
 
 </LinearLayout>
