@@ -81,8 +81,8 @@ public class HttpManager {
                 .addInterceptor(new LoggingInterceptor())
                 .addNetworkInterceptor(new NetworkInterceptor())
                 .cache(cache)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30,TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60,TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .cookieJar(cookieJar)
                 .build();
