@@ -108,12 +108,25 @@ websocket连接断开有以下两证情况：
 
 
 5.   android与js交互 ----> 混合开发（H5）
-
+    andorid与js交互：在android应用中嵌入了h5，实现android与h5之间的通信。
+    特点：
+    a) android调用js
+        1）loadUrl("javascript:方法名('参数')")
+        2）evaluateJava
+    b) js调用android
+        1）通过注册接口的方式addJavaInterface
+        2) WebViewClient 的shouldOverrideUrlLoading ()方法回调拦截 url
+        3) 通过 WebChromeClient 的onJsAlert()、onJsConfirm()、onJsPrompt（）方法回调拦截JS对话框alert()、confirm()、prompt（） 消息
 
 6.   Glide
 
 
 7.   eventbus
+
+
+webview
+webview
+loadData https://www.baidu.com/link?url=CRqZMp_AO6_YKuMhj2xpwNyKVgyXdIZ2EUnrm7PtFFq44F83C5sp7x8vOZq6ZVao&wd=&eqid=d4d837a20040ab14000000035ed6f9dc
 
 
 8.   kotlin
