@@ -1,0 +1,12 @@
+android项目打包上线流程
+
+1. 代码混淆  https://www.cnblogs.com/cr330326/p/5534915.html
+
+2. Apk加固
+
+3. 签名jks
+
+4. 上线  （对应国内各大应用市场，应用宝，小米，华为，oppo，vivo，360）
+
+5. 多渠道  友盟的多渠道打包（https://www.jianshu.com/p/e4da2f477cd8）
+
