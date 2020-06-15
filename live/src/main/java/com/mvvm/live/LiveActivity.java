@@ -112,7 +112,7 @@ public class LiveActivity extends AppCompatActivity {
         trtcParams.roomId = Integer.parseInt(mRoomId);
         //设置用户签名 正式环境有后台提供
         trtcParams.userSig = GenerateUserSig.genTestUserSig(trtcParams.userId);
-        trtcParams.role = TRTCCloudDef.TRTCRoleAnchor;
+        trtcParams.role = TRTCCloudDef.TRTCRoleAnchor; //设置当前的用户是主播还是观看
 
         //进入通话
         mTRTCCloud.enterRoom(trtcParams,TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);

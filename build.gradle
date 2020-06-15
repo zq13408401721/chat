@@ -9,7 +9,7 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.3.2'   // module中butterknife编译不过的问题 gradle的版本必须 <= 3.3.2
         //classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.jakewharton:butterknife-gradle-plugin:10.0.0'   //解决module使用butterknife的问题
         //classpath 'com.jakewharton:butterknife-annotations:10.0.0'
