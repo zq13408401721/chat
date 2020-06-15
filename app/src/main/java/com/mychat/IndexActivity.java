@@ -25,6 +25,7 @@ import com.behaviorexample.information.InfomationFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mychat.activitys.web.WebActivity;
 import com.mychat.fragments.home.HomeFragment;
+import com.mychat.fragments.live.LiveFragment;
 import com.mychat.fragments.own.OwnFragment;
 import com.mychat.fragments.trends.TrendsFragment;
 import com.mychat.utils.SpUtils;
@@ -47,6 +48,8 @@ public class IndexActivity extends AppCompatActivity {
     OwnFragment ownFragment;  //我的
     //资讯
     InfomationFragment infomationFragment;
+    //直播
+    LiveFragment liveFragment;
 
     FragmentTransaction fragmentTransaction;
     //用户隐私协议的提示框
@@ -87,6 +90,9 @@ public class IndexActivity extends AppCompatActivity {
                     case R.id.menu_infomation:
                         fragmentTransaction.replace(R.id.fragment_box,infomationFragment).commit();
                         return true;
+                    case R.id.menu_live:
+                        fragmentTransaction.replace(R.id.fragment_box,liveFragment).commit();
+                        break;
                 }
                 return false;
             }
@@ -102,6 +108,7 @@ public class IndexActivity extends AppCompatActivity {
         trendsFragment = new TrendsFragment();
         ownFragment = new OwnFragment();
         infomationFragment = new InfomationFragment();
+        liveFragment = new LiveFragment();
     }
 
     //第一次进入软件的时候，弹出用户协议的提示框

@@ -46,10 +46,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-
         }
     }
 
@@ -111,6 +109,10 @@ dependencies {
     implementation files('libs/chatim-release.aar')
     implementation files('libs/imgpreview-release.aar')
     implementation files('libs/information-release.aar')
+
+    //直播module源码引用
+    implementation project(':live')
+
     // 此处以JCore 2.3.4 版本为例。
     //compile project(':chatim')
     //引入chatim库源码

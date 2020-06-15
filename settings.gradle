@@ -1,3 +1,4 @@
+include ':live'
 rootProject.name='MyChat'
 include ':app'
 include ':chatim'
